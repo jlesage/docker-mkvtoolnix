@@ -55,7 +55,7 @@ RUN \
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
     ./configure --without-gettext \
                 --with-docbook-xsl-root=/usr/share/xml/docbook/xsl-stylesheets-1.79.1 && \
-    rake install && \
+    rake $RAKE_OPTS install && \
     cd .. && \
 
     # Cleanup.

@@ -9,10 +9,6 @@ language: generic
 services:
   - docker
 
-env:
-  global:
-  - RAKE_OPTS="-j2"
-
 before_script:
   - echo "Validating Dockerfile..."
   - docker run --rm -v "$(pwd)/Dockerfile:/Dockerfile:ro" redcoolbeans/dockerlint

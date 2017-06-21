@@ -34,6 +34,14 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.0.1</version>
+        <date>2017-06-21</date>
+        <change>Now using baseimage v1.4.2, which brings the following changes (from last used version):</change>
+        <change level="2">Associate the application's icon to a unique version to avoid browser cache issues.</change>
+        <change level="2">Fixed prefix of some service related messages.</change>
+        <change level="2">Added support for supplying supplementary groups of the application.</change>
+      </release>
+      <release>
         <version>1.0.0</version>
         <date>2017-06-13</date>
         <change>Initial release.</change>

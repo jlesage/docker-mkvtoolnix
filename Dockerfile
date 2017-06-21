@@ -5,7 +5,7 @@
 #
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.6-v1.4.0
+FROM jlesage/baseimage-gui:alpine-3.6-v1.4.2
 
 # Define software versions.
 ARG MKVTOOLNIX_VERSION=12.0.0

@@ -7,8 +7,7 @@ The GUI of the application is accessed through a modern web browser (no installa
 
 ---
 
-[![MKVToolNix logo](https://images.weserv.nl/?url=raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/mkvtoolnix-icon.png&w=200)](https://mkvtoolnix.download/)
-[![MKVToolNix](https://dummyimage.com/400x110/ffffff/575757&text=MKVToolNix)](https://mkvtoolnix.download/)
+[![MKVToolNix logo](https://images.weserv.nl/?url=raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/mkvtoolnix-icon.png&w=200)](https://mkvtoolnix.download/)[![MKVToolNix](https://dummyimage.com/400x110/ffffff/575757&text=MKVToolNix)](https://mkvtoolnix.download/)
 
 MKVToolNix is a set of tools to create, alter and inspect [Matroska] files.
 

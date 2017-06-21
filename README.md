@@ -1,39 +1,38 @@
 # Docker container for MKVToolNix
 [![Docker Automated build](https://img.shields.io/docker/automated/jlesage/mkvtoolnix.svg)](https://hub.docker.com/r/jlesage/mkvtoolnix/) [![](https://images.microbadger.com/badges/image/jlesage/mkvtoolnix.svg)](http://microbadger.com/#/images/jlesage/mkvtoolnix "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/jlesage/docker-mkvtoolnix.svg?branch=master)](https://travis-ci.org/jlesage/docker-mkvtoolnix)
 
-This is a Docker container for MKVToolNix.  The GUI of the application is
-accessed through a modern web browser (no installation or configuration needed
-on client side) or via any VNC client.
+This is a Docker container for MKVToolNix.
+
+The GUI of the application is accessed through a modern web browser (no installation or configuration needed on client side) or via any VNC client.
 
 ---
 
-[![MKVToolNix logo](https://raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/mkvtoolnix-icon.png)](https://mkvtoolnix.download/)
+[![MKVToolNix logo](https://images.weserv.nl/?url=raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/mkvtoolnix-icon.png&w=200)](https://mkvtoolnix.download/)
 [![MKVToolNix](https://dummyimage.com/400x110/ffffff/575757&text=MKVToolNix)](https://mkvtoolnix.download/)
 
-MKVToolNix is a set of tools to create, alter and inspect [Matroska] file.
-
-[Matroska]: http://www.matroska.org/
+MKVToolNix is a set of tools to create, alter and inspect [Matroska] files.
 
 ---
 
 ## Quick Start
 
-First create the configuration directory for MKVToolNix.  In this example,
-`/docker/appdata/mkvtoolnix` is used.  The directory `$HOME/Videos` is assumed
-to be the location of your video files.  Launch the MKVToolNix docker container
-with the following command:
+Launch the MKVToolNix docker container with the following command:
 ```
 docker run -d --rm \
     --name=mkvtoolnix \
     -p 5800:5800 \
     -p 5900:5900 \
-    -v /var/docker/mkvtoolnix:/config \
-    -v $HOME/Videos:/storage:rw \
+    -v /docker/appdata/mkvtoolnix:/config:rw \
+    -v $HOME:/storage:rw \
     jlesage/mkvtoolnix
 ```
 
-Browse to `http://your-host-ip:5800` to access the MKVToolNix GUI.  Your video
-files appear under the `/storage` folder in the container.
+Where:
+  - `/docker/appdata/mkvtoolnix`: This is where the application stores its configuration, log and any files needing persistency.
+  - `$HOME`: This location contains files from your host that need to be accessible by the application.
+
+Browse to `http://your-host-ip:5800` to access the MKVToolNix GUI.  Files from
+the host appear under the `/storage` folder in the container.
 
 ## Usage
 
@@ -61,16 +60,14 @@ of this parameter has the format `<VARIABLE_NAME>=<VALUE>`.
 
 | Variable       | Description                                  | Default |
 |----------------|----------------------------------------------|---------|
-|`USER_ID`       | ID of the user the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | 1000    |
-|`GROUP_ID`      | ID of the group the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | 1000    |
-|`TZ`            | [TimeZone] of the container.  Timezone can also be set by mapping `/etc/localtime` between the host and the container. | Etc/UTC |
-|`DISPLAY_WIDTH` | Width (in pixels) of the display.             | 1280    |
-|`DISPLAY_HEIGHT`| Height (in pixels) of the display.            | 768     |
-|`VNC_PASSWORD`  | Password needed to connect to the application's GUI.  See the [VNC Pasword](#vnc-password) section for more details. | (unset) |
-|`KEEP_GUIAPP_RUNNING`| When set to `1`, the application will be automatically restarted if it crashes or if user quits it. | (unset) |
-|`APP_NICENESS`  | Priority at which the X application should run.  A niceness value of −20 is the highest priority and 19 is the lowest priority.  By default, niceness is not set, meaning that the default niceness of 0 is used. | (unset) |
-
-[TimeZone]: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+|`USER_ID`| ID of the user the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | `1000` |
+|`GROUP_ID`| ID of the group the application runs as.  See [User/Group IDs](#usergroup-ids) to better understand when this should be set. | `1000` |
+|`TZ`| [TimeZone] of the container.  Timezone can also be set by mapping `/etc/localtime` between the host and the container. | `Etc/UTC` |
+|`DISPLAY_WIDTH`| Width (in pixels) of the application's window. | `1280` |
+|`DISPLAY_HEIGHT`| Height (in pixels) of the application's window. | `768` |
+|`VNC_PASSWORD`| Password needed to connect to the application's GUI.  See the [VNC Pasword](#vnc-password) section for more details. | (unset) |
+|`KEEP_GUIAPP_RUNNING`| When set to `1`, the application will be automatically restarted if it crashes or if user quits it. | `0` |
+|`APP_NICENESS`| Priority at which the application should run.  A niceness value of -20 is the highest priority and 19 is the lowest priority.  By default, niceness is not set, meaning that the default niceness of 0 is used.  **NOTE**: A negative niceness (priority increase) requires additional permissions.  In this case, the container should be run with the docker option `--cap-add=SYS_NICE`. | (unset) |
 
 ### Data Volumes
 
@@ -80,8 +77,8 @@ format: `<HOST_DIR>:<CONTAINER_DIR>[:PERMISSIONS]`.
 
 | Container path  | Permissions | Description |
 |-----------------|-------------|-------------|
-|`/config`        | rw          | This is where the application stores its configuration, log and any files needing persistency. |
-|`/storage`       | rw          | This is where video files to be edited are located. |
+|`/config`| rw | This is where the application stores its configuration, log and any files needing persistency. |
+|`/storage`| rw | This location contains files from your host that need to be accessible by the application. |
 
 ### Ports
 
@@ -92,8 +89,8 @@ container cannot be changed, but you are free to use any port on the host side.
 
 | Port | Mapping to host | Description |
 |------|-----------------|-------------|
-| 5800 | Mandatory       | Port used to access the application's GUI via the web interface. |
-| 5900 | Mandatory       | Port used to access the application's GUI via the VNC protocol.  |
+| 5800 | Mandatory | Port used to access the application's GUI via the web interface. |
+| 5900 | Mandatory | Port used to access the application's GUI via the VNC protocol. |
 
 ## User/Group IDs
 
@@ -147,6 +144,7 @@ explicitly the VNC port like this:
     http://<HOST IP ADDR>:5800/?port=<VNC PORT>
 
 ## VNC Password
+
 To restrict access to your application, a password can be specified.  This can
 be done via two methods:
   * By using the `VNC_PASSWORD` environment variable.
@@ -156,3 +154,6 @@ be done via two methods:
 
 **NOTE**: This is a very basic way to restrict access to the application and it
 should not be considered as secure in any way.
+
+[TimeZone]: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+[Matroska]: http://www.matroska.org/

@@ -34,6 +34,12 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.0.2</version>
+        <date>2017-06-22</date>
+        <change>Now using baseimage v1.4.3, which brings the following changes:</change>
+        <change level="2">Updated Alpine Linux to version 3.6.2.</change>
+      </release>
+      <release>
         <version>1.0.1</version>
         <date>2017-06-21</date>
         <change>Now using baseimage v1.4.2, which brings the following changes (from last used version):</change>

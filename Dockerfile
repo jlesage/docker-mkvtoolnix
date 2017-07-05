@@ -78,7 +78,7 @@ RUN apk --no-cache add \
 RUN \
     mkdir -p $HOME/.config/bunkus.org && \
     ln -s /config $HOME/.config/bunkus.org/mkvtoolnix-gui && \
-    ln -s /config/QtProject.conf /home/guiapp/.config/QtProject.conf
+    ln -s /config/QtProject.conf $HOME/.config/QtProject.conf
 
 # Generate and install favicons.
 RUN \

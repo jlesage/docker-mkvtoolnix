@@ -7,13 +7,16 @@ set -u # Treat unset variables as an error.
 echo "Generating machine-id..."
 cat /proc/sys/kernel/random/uuid | tr -d '-' > /etc/machine-id
 
+mkdir -p "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui"
+
+# Upgrade previous installations.
+[ ! -f /config/mkvtoolnix-gui.ini ] || mv -v /config/mkvtoolnix-gui.ini "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui/"
+[ ! -d /config/jobQueue ] || mv -v /config/jobQueue "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui/"
+[ ! -f /config/QtProject.conf ] || mv -v /config/QtProject.conf "$XDG_CONFIG_HOME/"
+
 # Copy default configuration files if needed.
-for FILE in mkvtoolnix-gui.ini QtProject.conf
-do
-  if [ ! -f /config/$FILE ]; then
-    cp /defaults/$FILE /config/
-  fi
-done
+[ -f "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui/mkvtoolnix-gui.ini" ] || cp -v /defaults/mkvtoolnix-gui.ini "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui/"
+[ -f "$XDG_CONFIG_HOME/QtProject.conf" ] || cp -v /defaults/QtProject.conf "$XDG_CONFIG_HOME/"
 
 # Take ownership of the config directory.
 chown -R $USER_ID:$GROUP_ID /config

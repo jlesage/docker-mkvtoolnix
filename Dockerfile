@@ -5,7 +5,7 @@
 #
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.6-v1.5.0
+FROM jlesage/baseimage-gui:alpine-3.6
 
 # Define software versions.
 ARG MKVTOOLNIX_VERSION=13.0.0
@@ -19,7 +19,7 @@ WORKDIR /tmp
 # Install MKVToolNix.
 RUN \
     # Install packages needed by the build.
-    apk --no-cache add --virtual build-dependencies \
+    add-pkg --virtual build-dependencies \
         curl \
         patch \
         imagemagick \
@@ -59,11 +59,11 @@ RUN \
     cd .. && \
 
     # Cleanup.
-    apk --no-cache del build-dependencies && \
+    del-pkg build-dependencies && \
     rm -rf /tmp/*
 
 # Install dependencies.
-RUN apk --no-cache add \
+RUN add-pkg \
         boost-system \
         boost-regex \
         boost-filesystem \
@@ -74,16 +74,10 @@ RUN apk --no-cache add \
         qt5-qtmultimedia \
         mesa-dri-swrast
 
-# Create link for config files.
-RUN \
-    mkdir -p $HOME/.config/bunkus.org && \
-    ln -s /config $HOME/.config/bunkus.org/mkvtoolnix-gui && \
-    ln -s /config/QtProject.conf $HOME/.config/QtProject.conf
-
 # Generate and install favicons.
 RUN \
     APP_ICON_URL=https://github.com/jlesage/docker-templates/raw/master/jlesage/images/mkvtoolnix-icon.png && \
-    /opt/install_app_icon.sh "$APP_ICON_URL"
+    install_app_icon.sh "$APP_ICON_URL"
 
 # Add files.
 COPY rootfs/ /

@@ -4,10 +4,12 @@ Definitions for MKVToolNix docker container.
 This file is used as data source to generate README.md and unRAID template files
 from Jinja2 templates.
 -->
-<app>
+<defs>
+  <app>
     <id>5</id>
+    <gui>True</gui>
     <friendly_name>MKVToolNix</friendly_name>
-    <name>{{ app.friendly_name|lower|replace(' ', '-') }}</name>
+    <name>{{ defs.app.friendly_name|lower|replace(' ', '-') }}</name>
     <project>
       <description>MKVToolNix is a set of tools to create, alter and inspect [Matroska] files.</description>
       <url>https://mkvtoolnix.download/</url>
@@ -19,10 +21,6 @@ from Jinja2 templates.
     <container>
       <rough_download_size>100MB</rough_download_size>
       <storage_permissions>rw</storage_permissions>
-      <!-- Environment variables -->
-      <!-- Volumes -->
-      <!-- Network ports -->
-      <!-- Devices -->
     </container>
     <!-- Extra stuff to be added to the documentation. -->
     <documentation>
@@ -68,4 +66,15 @@ from Jinja2 templates.
         <change>Initial release.</change>
       </release>
     </history>
-</app>
+  </app>
+  <container>
+    <!-- Environment variables -->
+    <environment_variables/>
+    <!-- Volumes -->
+    <volumes/>
+    <!-- Network ports -->
+    <ports/>
+    <!-- Devices -->
+    <devices/>
+  </container>
+</defs>

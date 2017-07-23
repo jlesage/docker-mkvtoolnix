@@ -8,7 +8,7 @@
 FROM jlesage/baseimage-gui:alpine-3.6-v2.0.1
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=13.0.0
+ARG MKVTOOLNIX_VERSION=14.0.0
 
 # Define software download URLs.
 ARG MKVTOOLNIX_URL=https://mkvtoolnix.download/sources/mkvtoolnix-${MKVTOOLNIX_VERSION}.tar.xz

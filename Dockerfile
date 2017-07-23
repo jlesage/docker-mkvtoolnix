@@ -42,11 +42,6 @@ RUN \
     echo "Downloading MKVToolNix package..." && \
     curl -# -L ${MKVTOOLNIX_URL} | tar xJ && \
 
-    # Apply patch to remove update check functionality.
-    cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
-    curl -# -L https://github.com/jlesage/mkvtoolnix/commit/1c01cffd59e8f91b5b2c53c9701e841d1e627d93.patch | patch -p1 && \
-    cd .. && \
-
     # Remove embedded profile from PNGs to avoid the "known incorrect sRGB
     # profile" warning.
     find mkvtoolnix-${MKVTOOLNIX_VERSION} -name "*.png" -exec convert -strip {} {} \; && \

@@ -32,6 +32,12 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.4.3</version>
+        <date>2017-08-14</date>
+        <change>Now using baseimage v2.0.6, which brings the following changes:</change>
+        <change level="2">Upgraded S6 overlay to version 1.20.0.0.</change>
+      </release>
+      <release>
         <version>1.4.2</version>
         <date>2017-07-31</date>
         <change>Now using baseimage v2.0.5, which brings the following changes (from last used version):</change>

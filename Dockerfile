@@ -48,7 +48,8 @@ RUN \
 
     # Compile MKVToolNix.
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
-    ./configure --without-gettext \
+    ./configure --prefix=/usr \
+                --without-gettext \
                 --with-docbook-xsl-root=/usr/share/xml/docbook/xsl-stylesheets-1.79.1 && \
     rake install && \
     cd .. && \

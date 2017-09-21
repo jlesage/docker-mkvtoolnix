@@ -36,6 +36,7 @@ RUN \
         libogg-dev \
         libvorbis-dev \
         docbook-xsl \
+        gettext-dev \
         && \
 
     # Download the MKVToolNix package.
@@ -46,12 +47,15 @@ RUN \
     # profile" warning.
     find mkvtoolnix-${MKVTOOLNIX_VERSION} -name "*.png" -exec convert -strip {} {} \; && \
 
+    # Fix translation.
+    sed-patch 's/# if defined(SYS_APPLE)/# if 1/' mkvtoolnix-${MKVTOOLNIX_VERSION}/src/common/translation.cpp && \
+
     # Compile MKVToolNix.
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
-    ./configure --prefix=/usr \
-                --without-gettext \
-                --disable-update-check \
-                --with-docbook-xsl-root=/usr/share/xml/docbook/xsl-stylesheets-1.79.1 && \
+    env LIBINTL_LIBS=-lintl ./configure \
+        --prefix=/usr \
+        --disable-update-check \
+        --with-docbook-xsl-root=/usr/share/xml/docbook/xsl-stylesheets-1.79.1 && \
     rake install && \
     cd .. && \
 

@@ -1,3 +1,3 @@
 #!/bin/sh
-/usr/local/bin/mkvtoolnix-gui --version
-exec /usr/local/bin/mkvtoolnix-gui
+/usr/bin/mkvtoolnix-gui --version
+exec /usr/bin/mkvtoolnix-gui

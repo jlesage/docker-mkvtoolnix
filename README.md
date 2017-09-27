@@ -1,5 +1,5 @@
 # Docker container for MKVToolNix
-[![Docker Automated build](https://img.shields.io/docker/automated/jlesage/mkvtoolnix.svg)](https://hub.docker.com/r/jlesage/mkvtoolnix/) [![](https://images.microbadger.com/badges/image/jlesage/mkvtoolnix.svg)](http://microbadger.com/#/images/jlesage/mkvtoolnix "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/jlesage/docker-mkvtoolnix.svg?branch=master)](https://travis-ci.org/jlesage/docker-mkvtoolnix)
+[![Docker Automated build](https://img.shields.io/docker/automated/jlesage/mkvtoolnix.svg)](https://hub.docker.com/r/jlesage/mkvtoolnix/) [![](https://images.microbadger.com/badges/image/jlesage/mkvtoolnix.svg)](http://microbadger.com/#/images/jlesage/mkvtoolnix "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/jlesage/docker-mkvtoolnix.svg?branch=master)](https://travis-ci.org/jlesage/docker-mkvtoolnix) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/JocelynLeSage)
 
 This is a Docker container for MKVToolNix.
 

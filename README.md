@@ -128,12 +128,12 @@ graphical interface of the application can be accessed via:
 
   * A web browser:
 ```
-http://&lt;HOST IP ADDR&gt;:5800
+http://<HOST IP ADDR>:5800
 ```
 
   * Any VNC client:
 ```
-&lt;HOST IP ADDR&gt;:5900
+<HOST IP ADDR>:5900
 ```
 
 ## Security

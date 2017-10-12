@@ -57,6 +57,7 @@ RUN \
         --disable-update-check \
         --with-docbook-xsl-root=/usr/share/xml/docbook/xsl-stylesheets-1.79.1 && \
     rake install && \
+    strip /usr/bin/mkv* && \
     cd .. && \
 
     # Cleanup.

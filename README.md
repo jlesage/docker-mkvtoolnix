@@ -128,7 +128,7 @@ docker stop mkvtoolnix
 ```
   3. Remove the container:
 ```
-docker stop mkvtoolnix
+docker rm mkvtoolnix
 ```
   4. Start the container using the `docker run` command.
 

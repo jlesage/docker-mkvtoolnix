@@ -19,7 +19,7 @@ mkdir -p "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui"
 [ -f "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui/mkvtoolnix-gui.ini" ] || cp -v /defaults/mkvtoolnix-gui.ini "$XDG_CONFIG_HOME/bunkus.org/mkvtoolnix-gui/"
 [ -f "$XDG_CONFIG_HOME/QtProject.conf" ] || cp -v /defaults/QtProject.conf "$XDG_CONFIG_HOME/"
 
-# Take ownership of the config directory.
-chown -R $USER_ID:$GROUP_ID /config
+# Take ownership of the config directory content.
+chown -R $USER_ID:$GROUP_ID /config/*
 
 # vim: set ft=sh :

@@ -8,13 +8,27 @@
 FROM jlesage/baseimage-gui:alpine-3.6-v3.2.2
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=19.0.0
+ARG MKVTOOLNIX_VERSION=20.0.0
 
 # Define software download URLs.
 ARG MKVTOOLNIX_URL=https://mkvtoolnix.download/sources/mkvtoolnix-${MKVTOOLNIX_VERSION}.tar.xz
 
 # Define working directory.
 WORKDIR /tmp
+
+# Install dependencies.
+RUN add-pkg \
+        boost-system \
+        boost-regex \
+        boost-filesystem \
+        libmagic \
+        libmatroska \
+        libebml \
+        flac \
+        qt5-qtmultimedia \
+        mesa-dri-swrast \
+        && \
+    add-pkg cmark --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing
 
 # Install MKVToolNix.
 RUN \
@@ -63,18 +77,6 @@ RUN \
     # Cleanup.
     del-pkg build-dependencies && \
     rm -rf /tmp/*
-
-# Install dependencies.
-RUN add-pkg \
-        boost-system \
-        boost-regex \
-        boost-filesystem \
-        libmagic \
-        libmatroska \
-        libebml \
-        flac \
-        qt5-qtmultimedia \
-        mesa-dri-swrast
 
 # Generate and install favicons.
 RUN \

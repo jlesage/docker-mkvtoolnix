@@ -1,5 +1,5 @@
 # Docker container for MKVToolNix
-[![Docker Automated build](https://img.shields.io/docker/automated/jlesage/mkvtoolnix.svg)](https://hub.docker.com/r/jlesage/mkvtoolnix/) [![](https://images.microbadger.com/badges/image/jlesage/mkvtoolnix.svg)](http://microbadger.com/#/images/jlesage/mkvtoolnix "Get your own image badge on microbadger.com") [![Build Status](https://travis-ci.org/jlesage/docker-mkvtoolnix.svg?branch=master)](https://travis-ci.org/jlesage/docker-mkvtoolnix) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/JocelynLeSage)
+[![Docker Automated build](https://img.shields.io/docker/automated/jlesage/mkvtoolnix.svg)](https://hub.docker.com/r/jlesage/mkvtoolnix/) [![Docker Image](https://images.microbadger.com/badges/image/jlesage/mkvtoolnix.svg)](http://microbadger.com/#/images/jlesage/mkvtoolnix) [![Build Status](https://travis-ci.org/jlesage/docker-mkvtoolnix.svg?branch=master)](https://travis-ci.org/jlesage/docker-mkvtoolnix) [![GitHub Release](https://img.shields.io/github/release/jlesage/docker-mkvtoolnix.svg)](https://github.com/jlesage/docker-mkvtoolnix/releases/latest) [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/JocelynLeSage)
 
 This is a Docker container for MKVToolNix.
 
@@ -99,6 +99,7 @@ container cannot be changed, but you are free to use any port on the host side.
 | 5900 | Optional | Port used to access the application's GUI via the VNC protocol.  Optional if no VNC client is used. |
 
 ## Docker Compose File
+
 Here is an example of a `docker-compose.yml` file that can be used with
 [Docker Compose](https://docs.docker.com/compose/overview/).
 

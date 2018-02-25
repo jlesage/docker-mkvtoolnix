@@ -34,7 +34,7 @@ from Jinja2 templates.
       <release>
         <version>1.15.0</version>
         <date>2018-02-24</date>
-        <change>Upgraded MKVToolNix to version 20.0.0.</change>
+        <change>Upgraded MKVToolNix to version 21.0.0.</change>
       </release>
       <release>
         <version>1.14.2</version>

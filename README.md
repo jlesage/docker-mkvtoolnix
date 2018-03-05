@@ -279,9 +279,6 @@ the Remote Framebuffer Protocol [RFC](https://tools.ietf.org/html/rfc6143) (see
 section [7.2.2](https://tools.ietf.org/html/rfc6143#section-7.2.2)).  Any
 characters beyhond the limit are ignored.
 
-[TimeZone]: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-[Matroska]: http://www.matroska.org/
-
 ## Reverse Proxy
 
 The following sections contains NGINX configuration that need to be added in
@@ -378,6 +375,9 @@ server {
 }
 
 ```
+
+[TimeZone]: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+[Matroska]: http://www.matroska.org/
 
 ## Support or Contact
 

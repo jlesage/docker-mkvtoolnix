@@ -28,7 +28,7 @@ RUN add-pkg \
         qt5-qtmultimedia \
         mesa-dri-swrast \
         && \
-    add-pkg cmark --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing
+    add-pkg cmark-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
 
 # Install MKVToolNix.
 RUN \

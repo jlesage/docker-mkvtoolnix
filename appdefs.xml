@@ -32,6 +32,15 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.18.0</version>
+        <date>2018-06-11</date>
+        <change>Upgraded MKVToolNix to version 24.0.0.</change>
+        <change>Now using baseimage v3.3.6, which brings the following changes (since last used version):</change>
+        <change level="2">Upgraded s6-overlay to version 1.21.4.0.</change>
+        <change level="2">Wait for a limited time when terminating a service.</change>
+        <change level="2">Set and create the XDG_RUNTIME_DIR directory.</change>
+      </release>
+      <release>
         <version>1.17.0</version>
         <date>2018-05-02</date>
         <change>Upgraded MKVToolNix to version 23.0.0.</change>

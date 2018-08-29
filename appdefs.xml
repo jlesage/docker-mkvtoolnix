@@ -15,7 +15,7 @@ from Jinja2 templates.
       <url>https://mkvtoolnix.download/</url>
     </project>
     <unraid>
-      <support_url>https://forums.lime-technology.com/topic/58039-support-mkvtoolnix/</support_url>
+      <support_url>https://forums.unraid.net/topic/58039-support-mkvtoolnix/</support_url>
       <category>MediaApp:Video</category>
     </unraid>
     <container>

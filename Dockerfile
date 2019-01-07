@@ -71,6 +71,7 @@ RUN \
 
     # Compile MKVToolNix.
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
+    curl -# -L https://raw.githubusercontent.com/jlesage/docker-mkvtoolnix/master/disable-high-dpi-scaling-override.patch | patch -p1 && \
     env LIBINTL_LIBS=-lintl ./configure \
         --prefix=/usr \
         --disable-update-check \

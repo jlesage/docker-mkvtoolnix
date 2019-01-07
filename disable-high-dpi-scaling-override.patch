@@ -1,0 +1,28 @@
+--- a/src/mkvtoolnix-gui/mkvtoolnix_gui.cpp
++++ b/src/mkvtoolnix-gui/mkvtoolnix_gui.cpp
+@@ -27,10 +27,14 @@
+   // instantiating & loading Util::Settings as that requires
+   // Application to be instantiated — which in turn requires that the
+   // DPI setting's been set.
++#if 0
+   auto reg = Util::Settings::registry();
+   reg->beginGroup(s_grpSettings);
+   if (!reg->value(s_valUiDisableHighDPIScaling).toBool())
+     QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
++#else
++  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
++#endif
+ #endif
+ }
+ 
+--- a/src/mkvtoolnix-gui/main_window/preferences_dialog.cpp
++++ b/src/mkvtoolnix-gui/main_window/preferences_dialog.cpp
+@@ -767,6 +767,8 @@
+   ui->cbGuiDisableHighDPIScaling->setChecked(m_cfg.m_uiDisableHighDPIScaling);
+ #if QT_VERSION < QT_VERSION_CHECK(5, 6, 0)
+   ui->cbGuiDisableHighDPIScaling->setVisible(false);
++#elif 1
++  ui->cbGuiDisableHighDPIScaling->setVisible(false);
+ #endif
+ }
+ 

@@ -32,6 +32,12 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.23.0</version>
+        <date>2019-01-07</date>
+        <change>Upgraded MKVToolNix to version 30.1.0.</change>
+        <change>Fixed issue where special characters would not display correctly in open file dialog box.</change>
+      </release>
+      <release>
         <version>1.22.0</version>
         <date>2018-12-03</date>
         <change>Upgraded MKVToolNix to version 29.0.0.</change>

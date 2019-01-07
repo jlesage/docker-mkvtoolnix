@@ -66,16 +66,15 @@ RUN \
     # profile" warning.
     find mkvtoolnix-${MKVTOOLNIX_VERSION} -name "*.png" -exec convert -strip {} {} \; && \
 
-    # Fix translation.
-    sed-patch 's/# if defined(SYS_APPLE)/# if 1/' mkvtoolnix-${MKVTOOLNIX_VERSION}/src/common/translation.cpp && \
-
     # Compile MKVToolNix.
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
     curl -# -L https://raw.githubusercontent.com/jlesage/docker-mkvtoolnix/master/disable-high-dpi-scaling-override.patch | patch -p1 && \
     env LIBINTL_LIBS=-lintl ./configure \
         --prefix=/usr \
+        --mandir=/tmp/mkvtoolnix-man \
         --disable-update-check \
-        --with-docbook-xsl-root=/usr/share/xml/docbook/xsl-stylesheets-1.79.1 && \
+        && \
+    rake -j8 && \
     rake install && \
     strip /usr/bin/mkv* && \
     cd .. && \

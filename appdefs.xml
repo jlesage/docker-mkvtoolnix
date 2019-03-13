@@ -32,6 +32,12 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.25.0</version>
+        <date>2019-03-13</date>
+        <change>Upgraded MKVToolNix to version 32.0.0.</change>
+        <change>Use baseimage based on Alpine Linux 3.9.</change>
+      </release>
+      <release>
         <version>1.24.0</version>
         <date>2019-02-12</date>
         <change>Upgraded MKVToolNix to version 31.0.0.</change>

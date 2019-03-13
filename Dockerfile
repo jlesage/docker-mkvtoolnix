@@ -8,7 +8,7 @@
 FROM jlesage/baseimage-gui:alpine-3.8-v3.5.1
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=31.0.0
+ARG MKVTOOLNIX_VERSION=32.0.0
 ARG MEDIAINFO_VERSION=18.12
 
 # Define software download URLs.

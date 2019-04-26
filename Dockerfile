@@ -89,7 +89,6 @@ RUN \
     add-pkg --virtual build-dependencies \
         build-base \
         curl \
-        patch \
         qt5-qtbase-dev \
         libmediainfo-dev \
         && \
@@ -97,8 +96,6 @@ RUN \
     echo "Downloading MediaInfo package..." && \
     mkdir mediainfo && \
     curl -# -L ${MEDIAINFO_URL} | tar xz --strip 1 -C mediainfo && \
-    # Patch.
-    curl -# -L https://raw.githubusercontent.com/jlesage/docker-mkvtoolnix/master/fix-mediainfo-args.patch | patch -d mediainfo -p1 && \
     # Compile.
     cd mediainfo/Project/QMake/GUI && \
     /usr/lib/qt5/bin/qmake && \

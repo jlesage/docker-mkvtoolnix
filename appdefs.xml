@@ -32,6 +32,11 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.34.0</version>
+        <date>2019-11-09</date>
+        <change>Upgraded MKVToolNix to version 40.0.0.</change>
+      </release>
+      <release>
         <version>1.33.0</version>
         <date>2019-11-05</date>
         <change>Upgraded MKVToolNix to version 39.0.0.</change>

@@ -11,7 +11,7 @@ FROM jlesage/baseimage-gui:alpine-3.9-v3.5.2
 ARG DOCKER_IMAGE_VERSION=unknown
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=39.0.0
+ARG MKVTOOLNIX_VERSION=40.0.0
 ARG MEDIAINFO_VERSION=19.09
 
 # Define software download URLs.
@@ -71,7 +71,6 @@ RUN \
 
     # Compile MKVToolNix.
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
-    curl -# -L https://raw.githubusercontent.com/jlesage/docker-mkvtoolnix/master/disable-high-dpi-scaling-override.patch | patch -p1 && \
     env LIBINTL_LIBS=-lintl ./configure \
         --prefix=/usr \
         --mandir=/tmp/mkvtoolnix-man \

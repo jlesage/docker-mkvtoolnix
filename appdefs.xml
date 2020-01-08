@@ -32,6 +32,14 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.36.0</version>
+        <date>2020-01-07</date>
+        <change>Upgraded MKVToolNix to version 42.0.0.</change>
+        <change>Now using baseimage v3.5.3, which brings the following changes:</change>
+        <change level="2">Updated installed packages to get latest security fixes.</change>
+        <change level="2">Make sure the tzdata is installed.</change>
+      </release>
+      <release>
         <version>1.35.0</version>
         <date>2019-12-07</date>
         <change>Upgraded MKVToolNix to version 41.0.0.</change>

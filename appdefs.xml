@@ -35,7 +35,7 @@ from Jinja2 templates.
         <version>1.43.0</version>
         <date>2020-08-05</date>
         <change>Upgraded MKVToolNix to version 49.0.0.</change>
-        <change>Now using baseimage to version 3.5.6, which brings the following changes:</change>
+        <change>Now using baseimage version 3.5.6, which brings the following changes:</change>
         <change level="2">Other small adjustments for the YAD log monitor target.</change>
       </release>
       <release>

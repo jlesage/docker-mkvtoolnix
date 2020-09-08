@@ -31,6 +31,7 @@ RUN add-pkg \
         libebml \
         flac \
         qt5-qtmultimedia \
+        qt5-qttranslations \
         mesa-dri-swrast \
         pcre2 \
         # For MediaInfo

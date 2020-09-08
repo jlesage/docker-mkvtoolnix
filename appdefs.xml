@@ -32,6 +32,13 @@ from Jinja2 templates.
     <!-- Changelog of the application. -->
     <history>
       <release>
+        <version>1.44.0</version>
+        <date>2020-09-08</date>
+        <change>Upgraded MKVToolNix to version 50.0.0.</change>
+        <change>Upgraded MediaInfo to version 20.08.</change>
+        <change>Fixed an issue where setting the interface language would not work.</change>
+      </release>
+      <release>
         <version>1.43.0</version>
         <date>2020-08-05</date>
         <change>Upgraded MKVToolNix to version 49.0.0.</change>

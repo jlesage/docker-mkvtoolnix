@@ -11,7 +11,7 @@ FROM jlesage/baseimage-gui:alpine-3.12-v3.5.6
 ARG DOCKER_IMAGE_VERSION=unknown
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=49.0.0
+ARG MKVTOOLNIX_VERSION=50.0.0
 ARG MEDIAINFO_VERSION=20.03
 
 # Define software download URLs.
@@ -32,6 +32,7 @@ RUN add-pkg \
         flac \
         qt5-qtmultimedia \
         mesa-dri-swrast \
+        pcre2 \
         # For MediaInfo
         libmediainfo \
         qt5-qtsvg \
@@ -59,6 +60,7 @@ RUN \
         libvorbis-dev \
         docbook-xsl \
         gettext-dev \
+        pcre2-dev \
         && \
 
     # Download the MKVToolNix package.

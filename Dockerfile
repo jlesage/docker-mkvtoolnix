@@ -12,7 +12,7 @@ ARG DOCKER_IMAGE_VERSION=unknown
 
 # Define software versions.
 ARG MKVTOOLNIX_VERSION=50.0.0
-ARG MEDIAINFO_VERSION=20.03
+ARG MEDIAINFO_VERSION=20.08
 
 # Define software download URLs.
 ARG MKVTOOLNIX_URL=https://mkvtoolnix.download/sources/mkvtoolnix-${MKVTOOLNIX_VERSION}.tar.xz

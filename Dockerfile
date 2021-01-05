@@ -63,15 +63,17 @@ RUN \
         gettext-dev \
         pcre2-dev \
         && \
-
+    # Set same default compilation flags as abuild.
+    export CFLAGS="-Os -fomit-frame-pointer" && \
+    export CXXFLAGS="$CFLAGS" && \
+    export CPPFLAGS="$CFLAGS" && \
+    export LDFLAGS="-Wl,--as-needed" && \
     # Download the MKVToolNix package.
     echo "Downloading MKVToolNix package..." && \
     curl -# -L ${MKVTOOLNIX_URL} | tar xJ && \
-
     # Remove embedded profile from PNGs to avoid the "known incorrect sRGB
     # profile" warning.
     find mkvtoolnix-${MKVTOOLNIX_VERSION} -name "*.png" -exec convert -strip {} {} \; && \
-
     # Compile MKVToolNix.
     cd mkvtoolnix-${MKVTOOLNIX_VERSION} && \
     env LIBINTL_LIBS=-lintl ./configure \
@@ -83,7 +85,6 @@ RUN \
     rake install && \
     strip /usr/bin/mkv* && \
     cd .. && \
-
     # Cleanup.
     del-pkg build-dependencies && \
     rm -rf /tmp/* /tmp/.[!.]*
@@ -97,6 +98,11 @@ RUN \
         qt5-qtbase-dev \
         libmediainfo-dev \
         && \
+    # Set same default compilation flags as abuild.
+    export CFLAGS="-Os -fomit-frame-pointer" && \
+    export CXXFLAGS="$CFLAGS" && \
+    export CPPFLAGS="$CFLAGS" && \
+    export LDFLAGS="-Wl,--as-needed" && \
     # Download sources.
     echo "Downloading MediaInfo package..." && \
     mkdir mediainfo && \

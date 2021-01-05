@@ -17,6 +17,7 @@ ARG MEDIAINFO_VERSION=20.09
 # Define software download URLs.
 ARG MKVTOOLNIX_URL=https://mkvtoolnix.download/sources/mkvtoolnix-${MKVTOOLNIX_VERSION}.tar.xz
 ARG MEDIAINFO_URL=https://github.com/MediaArea/MediaInfo/archive/v${MEDIAINFO_VERSION}.tar.gz
+ARG MEDIAINFOLIB_URL=https://mediaarea.net/download/source/libmediainfo/${MEDIAINFO_VERSION}/libmediainfo_${MEDIAINFO_VERSION}.tar.xz
 
 # Define working directory.
 WORKDIR /tmp
@@ -35,8 +36,10 @@ RUN add-pkg \
         mesa-dri-swrast \
         pcre2 \
         # For MediaInfo
-        libmediainfo \
         qt5-qtsvg \
+        libcurl \
+        libzen \
+        tinyxml2 \
         && \
     add-pkg cmark-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/community
 
@@ -95,27 +98,71 @@ RUN \
     add-pkg --virtual build-dependencies \
         build-base \
         curl \
+        cmake \
+        automake \
+        autoconf \
+        libtool \
+        curl-dev \
+        libmms-dev \
+        libzen-dev \
+        tinyxml2-dev \
         qt5-qtbase-dev \
-        libmediainfo-dev \
         && \
     # Set same default compilation flags as abuild.
     export CFLAGS="-Os -fomit-frame-pointer" && \
     export CXXFLAGS="$CFLAGS" && \
     export CPPFLAGS="$CFLAGS" && \
     export LDFLAGS="-Wl,--as-needed" && \
-    # Download sources.
+    # Download MediaInfoLib.
+    echo "Downloading MediaInfoLib package..." && \
+    mkdir MediaInfoLib && \
+    curl -# -L ${MEDIAINFOLIB_URL} | tar xJ --strip 1 -C MediaInfoLib && \
+    rm -r \
+        MediaInfoLib/Project/MS* \
+        MediaInfoLib/Project/zlib \
+        MediaInfoLib/Source/ThirdParty/tinyxml2 \
+        && \
+    # Compile MediaInfoLib.
+    echo "Compiling MediaInfoLib..." && \
+    cd MediaInfoLib/Project/CMake && \
+    cmake -DCMAKE_BUILD_TYPE=None \
+          -DCMAKE_INSTALL_PREFIX=/usr \
+          -DCMAKE_VERBOSE_MAKEFILE=OFF \
+          -DBUILD_SHARED_LIBS=ON \
+          && \
+    make -j$(nproc) install && \
+    cd ../../../ && \
+    # Download MediaInfo.
     echo "Downloading MediaInfo package..." && \
-    mkdir mediainfo && \
-    curl -# -L ${MEDIAINFO_URL} | tar xz --strip 1 -C mediainfo && \
-    # Compile.
-    cd mediainfo/Project/QMake/GUI && \
+    mkdir MediaInfo && \
+    curl -# -L ${MEDIAINFO_URL} | tar xz --strip 1 -C MediaInfo && \
+    # Compile the GUI.
+    echo "Compiling MediaInfo GUI..." && \
+    cd MediaInfo/Project/QMake/GUI && \
     /usr/lib/qt5/bin/qmake && \
     make -j$(nproc) install && \
     cd ../../../../ && \
-    # Install
+    # Compile the CLI.
+    echo "Compiling MediaInfo CLI..." && \
+    cd MediaInfo/Project/GNU/CLI && \
+    ./autogen.sh && \
+    ./configure \
+        --prefix=/usr \
+        --enable-static=no \
+        && \
+    make -j$(nproc) install && \
+    # Strip binaries.
+    strip -v /usr/bin/mediainfo && \
     strip -v /usr/bin/mediainfo-gui && \
+    strip -v /usr/lib/libmediainfo.so && \
     cd ../ && \
     # Cleanup.
+    rm -r \
+        /usr/include/MediaInfo \
+        /usr/include/MediaInfoDLL \
+        /usr/lib/cmake/mediainfolib \
+        /usr/lib/pkgconfig/libmediainfo.pc \
+        && \
     del-pkg build-dependencies && \
     rm -rf /tmp/* /tmp/.[!.]*
 

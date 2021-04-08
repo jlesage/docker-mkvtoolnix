@@ -162,7 +162,6 @@ version: '3'
 services:
   mkvtoolnix:
     image: jlesage/mkvtoolnix
-    build: .
     ports:
       - "5800:5800"
     volumes:

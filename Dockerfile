@@ -5,7 +5,7 @@
 #
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.12-v3.5.7
+FROM jlesage/baseimage-gui:alpine-3.15-v3.5.8
 
 # Docker image version is provided via build arg.
 ARG DOCKER_IMAGE_VERSION=unknown
@@ -53,6 +53,7 @@ RUN \
         build-base \
         ruby-rake \
         ruby-json \
+        ruby-rexml \
         qt5-qtbase-dev \
         qt5-qtmultimedia-dev \
         boost-dev \

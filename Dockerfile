@@ -11,7 +11,7 @@ FROM jlesage/baseimage-gui:alpine-3.15-v3.5.8
 ARG DOCKER_IMAGE_VERSION=unknown
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=66.0.0
+ARG MKVTOOLNIX_VERSION=67.0.0
 ARG MEDIAINFO_VERSION=21.09
 
 # Define software download URLs.

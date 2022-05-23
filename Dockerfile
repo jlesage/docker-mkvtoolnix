@@ -11,7 +11,7 @@ FROM jlesage/baseimage-gui:alpine-3.15-v3.5.8
 ARG DOCKER_IMAGE_VERSION=unknown
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=67.0.0
+ARG MKVTOOLNIX_VERSION=68.0.0
 ARG MEDIAINFO_VERSION=22.03
 
 # Define software download URLs.
@@ -56,6 +56,7 @@ RUN \
         ruby-rexml \
         qt5-qtbase-dev \
         qt5-qtmultimedia-dev \
+        qt5-qtsvg-dev \
         boost-dev \
         file-dev \
         zlib-dev \

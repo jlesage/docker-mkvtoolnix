@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv sh
+#!/bin/sh
 
 if [ -f /config/xdg/config/bunkus.org/mkvtoolnix-gui/mkvtoolnix-gui.ini ]
 then

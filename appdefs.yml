@@ -21,6 +21,15 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 22.10.1
+      date: 2022-10-16
+      changes:
+        - 'Versioning scheme changed to `YY.MM.SEQUENCE`.'
+        - 'Update of the baseimage to version 4.0.4 brings the following new features:'
+        - '2:Multi-arch image support.'
+        - '2:Support for dark mode.'
+        - '2:Support for remote window resize.'
+        - '2:Update to the web UI, with a new, simplified and less intrusive look.'
     - version: 1.66.0
       date: 2022-10-09
       changes:

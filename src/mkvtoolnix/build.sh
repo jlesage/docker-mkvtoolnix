@@ -37,7 +37,7 @@ apk --no-cache add \
     qtchooser \
     qt5-qtbase-dev \
 
-xx-apk --no-cache add \
+xx-apk --no-cache --no-scripts add \
     musl-dev \
     gcc \
     g++ \

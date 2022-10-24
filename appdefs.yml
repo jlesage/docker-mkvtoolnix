@@ -21,6 +21,14 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 22.10.2
+      date: 2022-10-24
+      changes:
+        - 'Update of the baseimage to version 4.1.1 brings the following changes:'
+        - '2:Collapse the setting section of the control panel by default on touch devices to accommodate the size taken by the on-screen keyboard.'
+        - '2:Include the Docker image platform in informational box printed during container startup.'
+        - '2:A umask value of `0000` was not properly applied.'
+        - '2:Fixed issue where the window manager configuration may fail to load.'
     - version: 22.10.1
       date: 2022-10-16
       changes:

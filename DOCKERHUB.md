@@ -8,7 +8,7 @@ installation or configuration needed on the client side) or via any VNC client.
 
 ---
 
-[![MKVToolNix logo](https://images.weserv.nl/?url=raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/mkvtoolnix-icon.png&w=200)](https://mkvtoolnix.download)[![MKVToolNix](https://images.placeholders.dev/?width=320&height=110&fontFamily=Georgia,sans-serif&fontWeight=400&fontSize=52&text=MKVToolNix&bgColor=rgba(0,0,0,0.0)&textColor=rgba(121,121,121,1))](https://mkvtoolnix.download)
+[![MKVToolNix logo](https://images.weserv.nl/?url=raw.githubusercontent.com/jlesage/docker-templates/master/jlesage/images/mkvtoolnix-icon.png&w=110)](https://mkvtoolnix.download)[![MKVToolNix](https://images.placeholders.dev/?width=320&height=110&fontFamily=Georgia,sans-serif&fontWeight=400&fontSize=52&text=MKVToolNix&bgColor=rgba(0,0,0,0.0)&textColor=rgba(121,121,121,1))](https://mkvtoolnix.download)
 
 MKVToolNix is a set of tools to create, alter and inspect Matroska files.
 

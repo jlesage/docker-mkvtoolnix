@@ -65,7 +65,7 @@ RUN add-pkg \
         flac \
         libdvdread \
         tinyxml2 \
-        mesa-dri-swrast \
+        mesa-dri-gallium \
         qt5-qtbase-x11 \
         qt5-qtmultimedia \
         # Needed for icons.

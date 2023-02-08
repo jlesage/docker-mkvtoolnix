@@ -51,13 +51,13 @@ docker run -d \
     --name=mkvtoolnix \
     -p 5800:5800 \
     -v /docker/appdata/mkvtoolnix:/config:rw \
-    -v $HOME:/storage:rw \
+    -v /home/user:/storage:rw \
     jlesage/mkvtoolnix
 ```
 
 Where:
   - `/docker/appdata/mkvtoolnix`: This is where the application stores its configuration, states, log and any files needing persistency.
-  - `$HOME`: This location contains files from your host that need to be accessible to the application.
+  - `/home/user`: This location contains files from your host that need to be accessible to the application.
 
 Browse to `http://your-host-ip:5800` to access the MKVToolNix GUI.
 Files from the host appear under the `/storage` folder in the container.
@@ -210,7 +210,7 @@ services:
       - "5800:5800"
     volumes:
       - "/docker/appdata/mkvtoolnix:/config:rw"
-      - "$HOME:/storage:rw"
+      - "/home/user:/storage:rw"
 ```
 
 ## Docker Image Versioning

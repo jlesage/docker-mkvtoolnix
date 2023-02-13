@@ -75,6 +75,7 @@ log "Configuring MKVToolNix..."
         --host=$(xx-clang --print-target-triple) \
         --prefix=/usr \
         --disable-update-check \
+        --with-boost-libdir=$(xx-info sysroot)/usr/lib \
 )
 
 log "Compiling MKVToolNix..."

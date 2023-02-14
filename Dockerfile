@@ -61,6 +61,7 @@ WORKDIR /tmp
 
 # Install dependencies.
 RUN add-pkg \
+        boost1.78-filesystem \
         font-croscore \
         flac \
         libdvdread \

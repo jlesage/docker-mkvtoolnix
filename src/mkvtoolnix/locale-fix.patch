@@ -1,0 +1,15 @@
+Disable call to `imbue()`, which raises an exception when used with musl.  It
+seems that this call is required on Windows, but not on Linux.
+See https://gitlab.com/mbunkus/mkvtoolnix/-/issues/3482
+--- a/src/common/translation.cpp	2023-02-13 20:39:33.365761113 -0500
++++ b/src/common/translation.cpp	2023-02-13 20:40:08.745454105 -0500
+@@ -276,7 +276,9 @@
+   std::locale utf8_locale{ std::locale(), new std::codecvt_utf8<wchar_t> };
+ 
+   std::locale::global(utf8_locale);
++#if 0
+   boost::filesystem::path::imbue(utf8_locale);
++#endif
+ }
+ 
+ // ------------------------------------------------------------

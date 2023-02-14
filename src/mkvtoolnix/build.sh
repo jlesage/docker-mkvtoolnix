@@ -12,6 +12,8 @@ export LDFLAGS="-Wl,--strip-all -Wl,--as-needed"
 export CC=xx-clang
 export CXX=xx-clang++
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 function log {
     echo ">>> $*"
 }
@@ -28,6 +30,7 @@ fi
 #
 apk --no-cache add \
     curl \
+    patch \
     imagemagick \
     py3-pip \
     clang \
@@ -66,6 +69,9 @@ curl -# -L ${MKVTOOLNIX_URL} | tar xJ --strip 1 -C /tmp/mkvtoolnix
 #
 # Compile MKVToolNix
 #
+
+log "Patching MKVToolNix..."
+patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/locale-fix.patch
 
 log "Configuring MKVToolNix..."
 (

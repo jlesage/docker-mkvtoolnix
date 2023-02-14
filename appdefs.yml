@@ -21,6 +21,10 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 23.02.4
+      date: 2023-02-13
+      changes:
+        - 'Fixed MKVToolNix not starting correctly.'
     - version: 23.02.3
       date: 2023-02-13
       changes:

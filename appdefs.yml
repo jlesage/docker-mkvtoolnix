@@ -21,6 +21,12 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 23.02.5
+      date: 2023-02-14
+      changes:
+        - 'Restored proper handling of filenames with non-ASCII characters.'
+        - 'Updated baseimage to version 4.3.6, which brings the following changes:'
+        - '2:Limit the maximum number of opened files on system having a very large, unlimited value. This prevents unnecessary waste of CPU resources and time for applications trying to close all possible file descriptors.'
     - version: 23.02.4
       date: 2023-02-13
       changes:

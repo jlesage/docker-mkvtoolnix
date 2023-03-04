@@ -51,7 +51,7 @@ RUN xx-verify \
     /tmp/mediainfo-install/usr/lib/libzen.so
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.16-v4.3.6
+FROM jlesage/baseimage-gui:alpine-3.16-v4.4.0
 
 ARG MKVTOOLNIX_VERSION
 ARG DOCKER_IMAGE_VERSION

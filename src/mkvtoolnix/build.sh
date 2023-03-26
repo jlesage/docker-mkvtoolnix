@@ -72,7 +72,6 @@ curl -# -L -f ${MKVTOOLNIX_URL} | tar xJ --strip 1 -C /tmp/mkvtoolnix
 
 log "Patching MKVToolNix..."
 patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/locale-fix.patch
-patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/fix-issue-3481.patch
 
 log "Configuring MKVToolNix..."
 (

@@ -64,7 +64,7 @@ xx-apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/communi
 
 log "Downloading MKVToolNix package..."
 mkdir /tmp/mkvtoolnix
-curl -# -L ${MKVTOOLNIX_URL} | tar xJ --strip 1 -C /tmp/mkvtoolnix
+curl -# -L -f ${MKVTOOLNIX_URL} | tar xJ --strip 1 -C /tmp/mkvtoolnix
 
 #
 # Compile MKVToolNix

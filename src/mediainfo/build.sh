@@ -63,11 +63,11 @@ xx-apk --no-cache --no-scripts add \
 
 log "Downloading MediaInfo package..."
 mkdir /tmp/MediaInfo
-curl -# -L ${MEDIAINFO_URL} | tar xz --strip 1 -C /tmp/MediaInfo
+curl -# -L -f ${MEDIAINFO_URL} | tar xz --strip 1 -C /tmp/MediaInfo
 
 log "Downloading MediaInfoLib package..."
 mkdir /tmp/MediaInfoLib
-curl -# -L ${MEDIAINFOLIB_URL} | tar xJ --strip 1 -C /tmp/MediaInfoLib
+curl -# -L -f ${MEDIAINFOLIB_URL} | tar xJ --strip 1 -C /tmp/MediaInfoLib
 rm -r \
     /tmp/MediaInfoLib/Project/MS* \
     /tmp/MediaInfoLib/Project/zlib \
@@ -75,7 +75,7 @@ rm -r \
 
 log "Downloading ZenLib package..."
 mkdir /tmp/ZenLib
-curl -# -L ${ZENLIB_URL} | tar xz --strip 1 -C /tmp/ZenLib
+curl -# -L -f ${ZENLIB_URL} | tar xz --strip 1 -C /tmp/ZenLib
 
 #
 # Compile ZenLib

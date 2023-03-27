@@ -21,6 +21,10 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 23.03.2
+      date: 2023-03-26
+      changes:
+        - 'Updated MKVToolNix to version 75.0.0.'
     - version: 23.03.1
       date: 2023-03-05
       changes:

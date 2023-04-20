@@ -1,0 +1,22 @@
+--- a/Source/MediaInfo/Audio/File_Usac.h	2023-03-29 08:25:02.803364867 -0400
++++ b/Source/MediaInfo/Audio/File_Usac.h	2023-03-29 08:25:09.382148399 -0400
+@@ -305,7 +305,7 @@
+ 
+         arith_context() :           previous_window_size((int16u)-1)
+         {
+-            memset(&q, NULL, sizeof(q));
++            memset(&q, 0, sizeof(q));
+         }
+     };
+ 
+--- a/Source/MediaInfo/Audio/File_Usac.cpp	2023-03-29 08:32:04.501788621 -0400
++++ b/Source/MediaInfo/Audio/File_Usac.cpp	2023-03-29 08:32:27.491515747 -0400
+@@ -3158,7 +3158,7 @@
+     // arith_map_context
+     {
+         if (arith_reset_flag || C.arithContext[ch].previous_window_size==(int16u)-1)
+-            memset(&C.arithContext[ch].q, NULL, sizeof(C.arithContext[ch].q));
++            memset(&C.arithContext[ch].q, 0, sizeof(C.arithContext[ch].q));
+         else if (N != C.arithContext[ch].previous_window_size)
+         {
+             if (!N)

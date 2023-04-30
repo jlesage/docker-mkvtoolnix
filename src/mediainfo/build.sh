@@ -42,7 +42,6 @@ fi
 #
 apk --no-cache add \
     curl \
-    patch \
     clang \
     make \
     autoconf \
@@ -105,9 +104,6 @@ make DESTDIR=/tmp/mediainfo-install -C /tmp/ZenLib/Project/GNU/Library install
 #
 # Compile MediaInfoLib
 #
-
-log "Patching MediaInfoLib..."
-patch -p1 -d /tmp/MediaInfoLib < "$SCRIPT_DIR"/memset-fix.patch
 
 log "Configuring MediaInfoLib..."
 (

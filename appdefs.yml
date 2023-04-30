@@ -21,6 +21,12 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 23.04.1
+      date: 2023-04-30
+      changes:
+        - 'Updated MediaInfo to version 23.04.'
+        - 'Update of the baseimage to version 4.4.0 brings the following changes:'
+        - '2:Updated TigerVNC to version 1.13.1.'
     - version: 23.03.2
       date: 2023-03-26
       changes:

@@ -98,7 +98,7 @@ COPY --from=mediainfo /tmp/mediainfo-install/usr/lib /usr/lib/
 
 # Set internal environment variables.
 RUN \
-    set-cont-env APP_NAME "MVKToolNix" && \
+    set-cont-env APP_NAME "MKVToolNix" && \
     set-cont-env APP_VERSION "$MKVTOOLNIX_VERSION" && \
     set-cont-env DOCKER_IMAGE_VERSION "$DOCKER_IMAGE_VERSION" && \
     true

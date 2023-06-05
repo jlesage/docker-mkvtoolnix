@@ -8,7 +8,7 @@
 ARG DOCKER_IMAGE_VERSION=
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=76.0
+ARG MKVTOOLNIX_VERSION=77.0
 ARG MEDIAINFO_VERSION=23.04
 ARG MEDIAINFOLIB_VERSION=23.04
 ARG ZENLIB_VERSION=0.4.41
@@ -93,6 +93,7 @@ COPY rootfs/ /
 COPY --from=mkvtoolnix /tmp/mkvtoolnix-install/usr/bin /usr/bin
 COPY --from=mkvtoolnix /tmp/mkvtoolnix-install/usr/share/icons /usr/share/icons
 COPY --from=mkvtoolnix /tmp/mkvtoolnix-install/usr/share/locale /usr/share/locale
+COPY --from=mkvtoolnix /tmp/mkvtoolnix-install/usr/share/mkvtoolnix/qt_resources.rcc /usr/share/mkvtoolnix/qt_resources.rcc
 COPY --from=mediainfo /tmp/mediainfo-install/usr/bin /usr/bin
 COPY --from=mediainfo /tmp/mediainfo-install/usr/lib /usr/lib/
 

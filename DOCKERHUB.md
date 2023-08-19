@@ -22,8 +22,9 @@ MKVToolNix is a set of tools to create, alter and inspect Matroska files.
 
 ## Quick Start
 
-**NOTE**: The Docker command provided in this quick start is given as an example
-and parameters should be adjusted to your need.
+**NOTE**:
+    The Docker command provided in this quick start is given as an example
+    and parameters should be adjusted to your need.
 
 Launch the MKVToolNix docker container with the following command:
 ```shell
@@ -36,6 +37,7 @@ docker run -d \
 ```
 
 Where:
+
   - `/docker/appdata/mkvtoolnix`: This is where the application stores its configuration, states, log and any files needing persistency.
   - `/home/user`: This location contains files from your host that need to be accessible to the application.
 

@@ -12,6 +12,7 @@ app:
   name: mkvtoolnix
   friendly_name: MKVToolNix
   gui_type: x11
+  base_os: alpine
   project:
     description: |-
       MKVToolNix is a set of tools to create, alter and inspect Matroska files.

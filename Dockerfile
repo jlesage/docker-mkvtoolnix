@@ -8,7 +8,7 @@
 ARG DOCKER_IMAGE_VERSION=
 
 # Define software versions.
-ARG MKVTOOLNIX_VERSION=81.0
+ARG MKVTOOLNIX_VERSION=82.0
 ARG MEDIAINFO_VERSION=23.07
 ARG MEDIAINFOLIB_VERSION=23.07
 ARG ZENLIB_VERSION=0.4.41
@@ -67,14 +67,17 @@ RUN add-pkg \
         libdvdread \
         tinyxml2 \
         mesa-dri-gallium \
-        qt5-qtbase-x11 \
-        qt5-qtmultimedia \
+        qt6-qtbase-x11 \
+        qt6-qtmultimedia \
         # Needed for icons.
-        qt5-qtsvg \
+        qt6-qtsvg \
         # Needed for dark mode.
-        adwaita-qt \
+        adwaita-qt6 \
         && \
     add-pkg cmark-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/community && \
+    # Remove unused plugins that cause the following log message:
+    #   Plugin uses incompatible Qt library (6.6.0) [release]
+    rm -v /usr/lib/qt6/plugins/platforms/libqwayland-* && \
     # Save some space by removing unused DRI drivers.
     find /usr/lib/xorg/modules/dri/ -type f ! -name swrast_dri.so -exec echo "Removing {}..." ';' -delete
 

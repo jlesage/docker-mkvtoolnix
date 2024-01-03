@@ -38,7 +38,7 @@ apk --no-cache add \
     ruby-rake \
     pkgconf \
     qtchooser \
-    qt5-qtbase-dev \
+    qt6-qtbase-dev \
 
 xx-apk --no-cache --no-scripts add \
     musl-dev \
@@ -51,9 +51,9 @@ xx-apk --no-cache --no-scripts add \
     libvorbis-dev \
     libdvdread-dev \
     zlib-dev \
-    qt5-qtbase-dev \
-    qt5-qtmultimedia-dev \
-    qt5-qtsvg-dev \
+    qt6-qtbase-dev \
+    qt6-qtmultimedia-dev \
+    qt6-qtsvg-dev \
 
 xx-apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community add \
     cmark-dev \

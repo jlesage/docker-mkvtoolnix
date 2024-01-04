@@ -49,7 +49,7 @@ apk --no-cache add \
     libtool \
     pkgconf \
     qtchooser \
-    qt5-qtbase-dev \
+    qt6-qtbase-dev \
 
 xx-apk --no-cache --no-scripts add \
     musl-dev \
@@ -57,7 +57,7 @@ xx-apk --no-cache --no-scripts add \
     g++ \
     tinyxml2-dev \
     zlib-dev \
-    qt5-qtbase-dev \
+    qt6-qtbase-dev \
 
 #
 # Download sources.
@@ -130,12 +130,12 @@ make DESTDIR=/tmp/mediainfo-install -C /tmp/MediaInfoLib/Project/GNU/Library ins
 #
 
 log "Configuring MediaInfo GUI..."
-sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt5/mkspecs/common/clang.conf
+sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt6/mkspecs/common/clang.conf
 (
     cd /tmp/MediaInfo/Project/QMake/GUI && \
-    qmake -spec linux-clang
+    qmake6 -spec linux-clang
 )
-sed -i "s| /usr/lib/libQt5| $(xx-info sysroot)usr/lib/libQt5|g" /tmp/MediaInfo/Project/QMake/GUI/Makefile
+sed -i "s| /usr/lib/| $(xx-info sysroot)usr/lib/|g" /tmp/MediaInfo/Project/QMake/GUI/Makefile
 sed -i "s|LFLAGS        = .*|LFLAGS        = $LDFLAGS|" /tmp/MediaInfo/Project/QMake/GUI/Makefile
 
 log "Compiling MediaInfo GUI..."

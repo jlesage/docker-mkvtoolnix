@@ -22,6 +22,11 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 24.05.1
+      date: 2024-05-02
+      changes:
+        - 'Updated MKVToolNix to version 84.0.'
+        - 'Updated MediaInfo to version 24.04.'
     - version: 24.04.1
       date: 2024-04-02
       changes:

@@ -66,7 +66,6 @@ RUN add-pkg \
         flac \
         libdvdread \
         tinyxml2 \
-        mesa-dri-gallium \
         qt6-qtbase-x11 \
         qt6-qtmultimedia \
         # Needed for icons.
@@ -77,9 +76,7 @@ RUN add-pkg \
     add-pkg cmark-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/community && \
     # Remove unused plugins that cause the following log message:
     #   Plugin uses incompatible Qt library (6.6.0) [release]
-    rm -v /usr/lib/qt6/plugins/platforms/libqwayland-* && \
-    # Save some space by removing unused DRI drivers.
-    find /usr/lib/xorg/modules/dri/ -type f ! -name swrast_dri.so -exec echo "Removing {}..." ';' -delete
+    rm -v /usr/lib/qt6/plugins/platforms/libqwayland-*
 
 # Misc adjustments.
 RUN  \

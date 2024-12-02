@@ -74,6 +74,9 @@ RUN add-pkg \
         qt6-qtsvg \
         # Needed for dark mode.
         adwaita-qt6 \
+        # mesa-gl dependency is not automatically pulled with some architectures
+        # (e.g. arm64).
+        mesa-gl \
         && \
     # Remove unused plugins that cause the following log message:
     #   Plugin uses incompatible Qt library (6.6.0) [release]

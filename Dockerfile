@@ -23,7 +23,7 @@ ARG ZENLIB_URL=https://mediaarea.net/download/source/libzen/${ZENLIB_VERSION}/li
 FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
 
 # Build MKVToolNix.
-FROM --platform=$BUILDPLATFORM alpine:3.16 AS mkvtoolnix
+FROM --platform=$BUILDPLATFORM alpine:3.20 AS mkvtoolnix
 ARG TARGETPLATFORM
 ARG MKVTOOLNIX_URL
 COPY --from=xx / /
@@ -37,7 +37,7 @@ RUN xx-verify \
     /tmp/mkvtoolnix-install/usr/bin/mkvtoolnix-gui
 
 # Build MediaInfo.
-FROM --platform=$BUILDPLATFORM alpine:3.16 AS mediainfo
+FROM --platform=$BUILDPLATFORM alpine:3.20 AS mediainfo
 ARG TARGETPLATFORM
 ARG MEDIAINFO_URL
 ARG MEDIAINFOLIB_URL
@@ -51,7 +51,7 @@ RUN xx-verify \
     /tmp/mediainfo-install/usr/lib/libzen.so
 
 # Pull base image.
-FROM jlesage/baseimage-gui:alpine-3.16-v4.6.4
+FROM jlesage/baseimage-gui:alpine-3.20-v4.6.4
 
 ARG MKVTOOLNIX_VERSION
 ARG DOCKER_IMAGE_VERSION
@@ -61,19 +61,20 @@ WORKDIR /tmp
 
 # Install dependencies.
 RUN add-pkg \
-        boost1.78-filesystem \
+        boost1.84-filesystem \
         font-croscore \
         flac \
         libdvdread \
         tinyxml2 \
         qt6-qtbase-x11 \
         qt6-qtmultimedia \
+        libcmark \
+        fmt \
         # Needed for icons.
         qt6-qtsvg \
         # Needed for dark mode.
         adwaita-qt6 \
         && \
-    add-pkg cmark-dev --repository http://dl-cdn.alpinelinux.org/alpine/edge/community && \
     # Remove unused plugins that cause the following log message:
     #   Plugin uses incompatible Qt library (6.6.0) [release]
     rm -v /usr/lib/qt6/plugins/platforms/libqwayland-*

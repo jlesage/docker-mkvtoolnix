@@ -59,8 +59,6 @@ xx-apk --no-cache --no-scripts add \
     qt6-qtbase-dev \
     qt6-qtmultimedia-dev \
     qt6-qtsvg-dev \
-
-xx-apk --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community add \
     cmark-dev \
 
 #

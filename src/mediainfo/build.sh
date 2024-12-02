@@ -12,6 +12,8 @@ export LDFLAGS="-Wl,--strip-all -Wl,--as-needed"
 export CC=xx-clang
 export CXX=xx-clang++
 
+export PKG_CONFIG_PATH=/$(xx-info)/usr/lib/pkgconfig
+
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 function log {
@@ -44,11 +46,13 @@ apk --no-cache add \
     curl \
     clang \
     make \
+    cmake \
+    ninja \
+    patch \
     autoconf \
     automake \
     libtool \
     pkgconf \
-    qtchooser \
     qt6-qtbase-dev \
 
 xx-apk --no-cache --no-scripts add \
@@ -80,66 +84,53 @@ mkdir /tmp/ZenLib
 curl -# -L -f ${ZENLIB_URL} | tar xz --strip 1 -C /tmp/ZenLib
 
 #
-# Compile ZenLib
-#
-
-log "Configuring ZenLib..."
-(
-    cd /tmp/ZenLib/Project/GNU/Library && \
-    ./autogen.sh && \
-    ./configure \
-        --build=$(TARGETPLATFORM= xx-clang --print-target-triple) \
-        --host=$(xx-clang --print-target-triple) \
-        --prefix=/usr \
-        --disable-static \
-        --enable-shared \
-)
-
-log "Compiling ZenLib..."
-make -C /tmp/ZenLib/Project/GNU/Library -j$(nproc)
-
-log "Installing ZenLib..."
-make DESTDIR=/tmp/mediainfo-install -C /tmp/ZenLib/Project/GNU/Library install
-
-#
 # Compile MediaInfoLib
 #
 
 log "Configuring MediaInfoLib..."
 (
-    cd /tmp/MediaInfoLib/Project/GNU/Library && \
-    ./autogen.sh && \
-    ./configure \
-        --build=$(TARGETPLATFORM= xx-clang --print-target-triple) \
-        --host=$(xx-clang --print-target-triple) \
-        --prefix=/usr \
-        --disable-static \
-        --enable-shared \
-        --with-libtinyxml2 \
+    cd /tmp/MediaInfoLib && \
+    cmake -G Ninja -S Project/CMake -B build \
+        $(xx-clang --print-cmake-defines) \
+        -DCMAKE_FIND_ROOT_PATH=$(xx-info sysroot) \
+        -DCMAKE_FIND_ROOT_PATH_MODE_LIBRARY=ONLY \
+        -DCMAKE_FIND_ROOT_PATH_MODE_INCLUDE=ONLY \
+        -DCMAKE_FIND_ROOT_PATH_MODE_PACKAGE=ONLY \
+        -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
+        -DCMAKE_BUILD_TYPE=MinSizeRel \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_VERBOSE_MAKEFILE=ON \
+        -DBUILD_SHARED_LIBS=ON \
+        -DBUILD_ZENLIB=ON \
 )
 
 log "Compiling MediaInfoLib..."
-make -C /tmp/MediaInfoLib/Project/GNU/Library -j$(nproc)
+cmake --build /tmp/MediaInfoLib/build
 
 log "Installing MediaInfoLib..."
-make DESTDIR=/tmp/mediainfo-install -C /tmp/MediaInfoLib/Project/GNU/Library install
+DESTDIR=/tmp/mediainfo-install cmake --install /tmp/MediaInfoLib/build
+DESTDIR=$(xx-info sysroot) cmake --install /tmp/MediaInfoLib/build
 
 #
 # Compile MediaInfo GUI
 # NOTE: The UI under MediaInfo/Project/GNU/GUI is not the correct one!
 #
 
+log "Patching MediaInfo GUI..."
+patch -p1 -d /tmp/MediaInfo < "$SCRIPT_DIR"/disable-update.patch
+
 log "Configuring MediaInfo GUI..."
 sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt6/mkspecs/common/clang.conf
 (
     cd /tmp/MediaInfo/Project/QMake/GUI && \
-    qmake6 -spec linux-clang
+    /usr/lib/qt6/bin/qmake -spec linux-clang
 )
-sed -i "s| /usr/lib/| $(xx-info sysroot)usr/lib/|g" /tmp/MediaInfo/Project/QMake/GUI/Makefile
+sed -i "s| /usr/lib/libQt6| $(xx-info sysroot)usr/lib/libQt6|g" /tmp/MediaInfo/Project/QMake/GUI/Makefile
+sed -i "s| /usr/lib/libGL.so | $(xx-info sysroot)/usr/lib/libGL.so |g" /tmp/MediaInfo/Project/QMake/GUI/Makefile
 sed -i "s|LFLAGS        = .*|LFLAGS        = $LDFLAGS|" /tmp/MediaInfo/Project/QMake/GUI/Makefile
 
 log "Compiling MediaInfo GUI..."
-make V=1 -C /tmp/MediaInfo/Project/QMake/GUI -j$(nproc)
+make -C /tmp/MediaInfo/Project/QMake/GUI -j$(nproc)
 
 log "Installing MediaInfo GUI..."
 make INSTALL_ROOT=/tmp/mediainfo-install -C /tmp/MediaInfo/Project/QMake/GUI install

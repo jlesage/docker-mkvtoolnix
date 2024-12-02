@@ -1,0 +1,43 @@
+--- a/Source/GUI/Qt/about.cpp
++++ b/Source/GUI/Qt/about.cpp
+@@ -66,8 +66,10 @@ void About::on_donate_clicked()
+     QDesktopServices::openUrl(QUrl("https://MediaArea.net/MediaInfo/Donate"));
+ }
+ 
++#if 0 // Check update disaled.
+ void About::on_checkversion_clicked()
+ {
+     QDesktopServices::openUrl(QUrl("https://MediaArea.net/MediaInfo"));
+     // copied from the VCL interface, not adapted for multi-plateform.
+ }
++#endif
+--- a/Source/GUI/Qt/about.h
++++ b/Source/GUI/Qt/about.h
+@@ -27,7 +27,9 @@ private:
+     Ui::About *ui;
+ 
+ private slots:
++#if 0 // Check update disaled.
+     void on_checkversion_clicked();
++#endif
+     void on_donate_clicked();
+     void on_mail_clicked();
+     void on_website_clicked();
+--- a/Source/GUI/Qt/about.ui
++++ b/Source/GUI/Qt/about.ui
+@@ -126,6 +126,7 @@ Sound-only formats (AC3, DTS, AAC, AU, AIFF...)</string>
+          </property>
+         </widget>
+        </item>
++       <!-- Check update disaled.
+        <item>
+         <widget class="QPushButton" name="checkversion">
+          <property name="text">
+@@ -133,6 +134,7 @@ Sound-only formats (AC3, DTS, AAC, AU, AIFF...)</string>
+          </property>
+         </widget>
+        </item>
++       -->
+        <item>
+         <widget class="QPushButton" name="donate">
+          <property name="text">

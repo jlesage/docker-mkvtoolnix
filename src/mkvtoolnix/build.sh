@@ -98,7 +98,7 @@ sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt6/mkspecs/common/clang.c
 # build-config) need to be adjusted to use the ones of the build target.
 sed -i "s|-I/usr/|-I$(xx-info sysroot)usr/|g" /tmp/mkvtoolnix/build-config
 sed -i "s| /usr/lib/| $(xx-info sysroot)usr/lib/|g" /tmp/mkvtoolnix/build-config
-sed -i "s| -Wl,-rpath,/usr/lib | -Wl,-rpath-link,$(xx-info sysroot)usr/lib:$(xx-info sysroot)usr/lib/pulseaudio |g" /tmp/mkvtoolnix/build-config
+sed -i "s| -Wl,-rpath,/usr/lib | -Wl,-rpath-link,$(xx-info sysroot)usr/lib:$(xx-info sysroot)usr/lib/pulseaudio:$(xx-info sysroot)/usr/lib/libproxy |g" /tmp/mkvtoolnix/build-config
 
 # Make sure to use tools from the builder host.
 sed -i "s|MOC = .*|MOC = /usr/lib/qt6/libexec/moc|" /tmp/mkvtoolnix/build-config

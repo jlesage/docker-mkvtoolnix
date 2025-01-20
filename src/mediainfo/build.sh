@@ -118,6 +118,7 @@ DESTDIR=$(xx-info sysroot) cmake --install /tmp/MediaInfoLib/build
 
 log "Patching MediaInfo GUI..."
 patch -p1 -d /tmp/MediaInfo < "$SCRIPT_DIR"/disable-update.patch
+patch -p1 -d /tmp/MediaInfo < "$SCRIPT_DIR"/revert-usage-of-webengine.patch
 
 log "Configuring MediaInfo GUI..."
 sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt6/mkspecs/common/clang.conf

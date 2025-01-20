@@ -1,0 +1,50 @@
+Revert:
+From 07b0cc69f2c8bd9c74d86964362c6a0792710f8a Mon Sep 17 00:00:00 2001
+From: cjee21 <77721854+cjee21@users.noreply.github.com>
+Date: Thu, 27 Jun 2024 17:00:06 +0800
+Subject: [PATCH] Qt GUI: Use WebEngine for HTML view
+
+Use WebEngine for HTML view to render the HTML properly.
+---
+ Project/QMake/GUI/MediaInfoQt.pro | 2 +-
+ Source/GUI/Qt/mainwindow.cpp      | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+--- a/Project/QMake/GUI/MediaInfoQt.pro
++++ b/Project/QMake/GUI/MediaInfoQt.pro
+@@ -2,7 +2,7 @@
+ # Project created by QtCreator 2010-07-23T13:03:11
+ # -------------------------------------------------
+ 
+-QT += core gui widgets network xml webenginewidgets
++QT += core gui widgets network xml
+ 
+ win32|macx {
+     TARGET = "MediaInfo"
+--- a/Source/GUI/Qt/mainwindow.cpp
++++ b/Source/GUI/Qt/mainwindow.cpp
+@@ -32,7 +32,6 @@
+ #include <QToolBar>
+ #include <QMainWindow>
+ #include <QMenuBar>
+-#include <QWebEngineView>
+ /*
+ #include <qwt/qwt_plot.h>
+ #include <qwt/qwt_plot_curve.h>
+@@ -660,12 +659,12 @@
+                 break;
+             case VIEW_HTML:
+                 C->Menu_View_HTML();
+-                viewWidget = new QWebEngineView();
+-                ((QWebEngineView*)viewWidget)->setHtml(wstring2QString(C->Inform_Get()));
++                viewWidget = new QTextBrowser();
++                ((QTextBrowser*)viewWidget)->setHtml(wstring2QString(C->Inform_Get()));
+                 break;
+             case VIEW_GRAPH:
+-                viewWidget = new QWebEngineView();
+-                ((QWebEngineView*)viewWidget)->setHtml(Generate_Graph_HTML(C, settings));
++                viewWidget = new QTextBrowser();
++                ((QTextBrowser*)viewWidget)->setHtml(Generate_Graph_HTML(C, settings));
+                 break;
+             case VIEW_TREE:
+                 C->Menu_View_Tree();

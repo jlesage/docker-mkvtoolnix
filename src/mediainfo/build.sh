@@ -43,7 +43,9 @@ fi
 # Install required packages.
 #
 apk --no-cache add \
+    bash \
     curl \
+    ncurses \
     clang \
     make \
     cmake \
@@ -53,6 +55,7 @@ apk --no-cache add \
     automake \
     libtool \
     pkgconf \
+    qt6-qttools \
     qt6-qtbase-dev \
 
 xx-apk --no-cache --no-scripts add \
@@ -62,6 +65,9 @@ xx-apk --no-cache --no-scripts add \
     tinyxml2-dev \
     zlib-dev \
     qt6-qtbase-dev \
+
+ln -s /usr/lib/qt6/bin/lupdate /usr/bin/lupdate
+ln -s /usr/lib/qt6/bin/lrelease /usr/bin/lrelease
 
 #
 # Download sources.
@@ -99,7 +105,7 @@ log "Configuring MediaInfoLib..."
         -DCMAKE_FIND_ROOT_PATH_MODE_PROGRAM=NEVER \
         -DCMAKE_BUILD_TYPE=MinSizeRel \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DCMAKE_VERBOSE_MAKEFILE=ON \
+        -DCMAKE_VERBOSE_MAKEFILE=OFF \
         -DBUILD_SHARED_LIBS=ON \
         -DBUILD_ZENLIB=ON \
 )
@@ -118,7 +124,7 @@ DESTDIR=$(xx-info sysroot) cmake --install /tmp/MediaInfoLib/build
 
 log "Patching MediaInfo GUI..."
 patch -p1 -d /tmp/MediaInfo < "$SCRIPT_DIR"/disable-update.patch
-patch -p1 -d /tmp/MediaInfo < "$SCRIPT_DIR"/revert-usage-of-webengine.patch
+patch -p1 -d /tmp/MediaInfo < "$SCRIPT_DIR"/use-qt-text-browser.patch
 
 log "Configuring MediaInfo GUI..."
 sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt6/mkspecs/common/clang.conf

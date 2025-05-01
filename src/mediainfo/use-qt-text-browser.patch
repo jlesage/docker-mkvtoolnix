@@ -1,0 +1,56 @@
+--- a/Project/QMake/GUI/MediaInfoQt.pro
++++ b/Project/QMake/GUI/MediaInfoQt.pro
+@@ -10,7 +10,7 @@ win32 {
+     qtHaveModule(webenginewidgets) {
+         QT += webenginewidgets
+     } else {
+-        DEFINES+=MEDIAINFO_HTML_NO
++        DEFINES+=QT_TEXT_BROWSER_YES
+     }
+ }
+ 
+--- a/Source/GUI/Qt/graphplugin.h
++++ b/Source/GUI/Qt/graphplugin.h
+@@ -18,6 +18,9 @@
+ #ifdef EDGE_WEBVIEW2_YES
+ #include "webview2widget.h"
+ #define WebViewWidget WebView2Widget
++#elif defined(QT_TEXT_BROWSER_YES)
++#include <QTextBrowser>
++#define WebViewWidget QTextBrowser
+ #else
+ #include <QWebEngineView>
+ #define WebViewWidget QWebEngineView
+--- a/Source/GUI/Qt/mainwindow.cpp
++++ b/Source/GUI/Qt/mainwindow.cpp
+@@ -55,6 +55,10 @@ using namespace ZenLib;
+ #include "webview2widget.h"
+ #include "graphplugin.h"
+ #define WebViewWidget WebView2Widget
++#elif defined(QT_TEXT_BROWSER_YES)
++#include <QTextBrowser>
++#include "graphplugin.h"
++#define WebViewWidget QTextBrowser
+ #elif !defined(MEDIAINFO_HTML_NO)
+ #include <QWebEngineView>
+ #include "graphplugin.h"
+--- a/Source/GUI/Qt/graphplugin.cpp
++++ b/Source/GUI/Qt/graphplugin.cpp
+@@ -78,6 +78,9 @@ QString GraphViewWidget::generateGraphHTML() {
+ 
+ void GraphViewWidget::refresh() {
+     QString graphHTML{generateGraphHTML()};
++#ifdef QT_TEXT_BROWSER_YES
++    webView->setHtml(graphHTML);
++#else
+     if (graphHTML.toUtf8().size() < 0.5e6)
+         webView->setHtml(graphHTML);
+     else {
+@@ -87,6 +90,7 @@ void GraphViewWidget::refresh() {
+         tempFile.write(graphHTML.toUtf8());
+         webView->load(QUrl::fromLocalFile(tempFile.fileName()));
+     }
++#endif
+ }
+ 
+ void GraphViewWidget::changeFilePos(int newFilePos) {

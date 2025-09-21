@@ -1,0 +1,546 @@
+diff --git a/ac/qt6.m4 b/ac/qt6.m4
+index 73130c8b0..98c930315 100644
+--- a/ac/qt6.m4
++++ b/ac/qt6.m4
+@@ -110,7 +110,7 @@ EOT
+ 
+   rm -f Makefile Makefile.Release
+ 
+-  modules_to_test="gui widgets network concurrent svg multimedia"
++  modules_to_test="gui widgets network concurrent svg"
+   if test x"$enable_gui" = xno; then
+     modules_to_test=
+   fi
+diff --git a/src/mkvtoolnix-gui/app.cpp b/src/mkvtoolnix-gui/app.cpp
+index 8d0570e75..3ab4f0e6a 100644
+--- a/src/mkvtoolnix-gui/app.cpp
++++ b/src/mkvtoolnix-gui/app.cpp
+@@ -33,7 +33,9 @@
+ #include "mkvtoolnix-gui/merge/tool.h"
+ #include "mkvtoolnix-gui/util/container.h"
+ #include "mkvtoolnix-gui/util/file_type_filter.h"
++#ifdef MEDIA_PLAYER
+ #include "mkvtoolnix-gui/util/media_player.h"
++#endif
+ #include "mkvtoolnix-gui/util/network_access_manager.h"
+ #include "mkvtoolnix-gui/util/process.h"
+ #include "mkvtoolnix-gui/util/settings.h"
+@@ -73,7 +75,9 @@ class AppPrivate {
+   std::unique_ptr<GuiCliParser> m_cliParser;
+   std::unique_ptr<QLocalServer> m_instanceCommunicator;
+   std::unique_ptr<Jobs::ProgramRunner> m_programRunner;
++#ifdef MEDIA_PLAYER
+   std::unique_ptr<Util::MediaPlayer> m_mediaPlayer;
++#endif
+   Util::NetworkAccessManager *m_networkAccessManager{new Util::NetworkAccessManager{}};
+   QThread m_networkAccessManagerThread;
+   bool m_otherInstanceRunning{};
+@@ -203,6 +207,7 @@ App::programRunner() {
+   return instance()->setupProgramRunner();
+ }
+ 
++#ifdef MEDIA_PLAYER
+ Util::MediaPlayer &
+ App::setupMediaPlayer() {
+   auto p = p_func();
+@@ -216,6 +221,7 @@ Util::MediaPlayer &
+ App::mediaPlayer() {
+   return instance()->setupMediaPlayer();
+ }
++#endif
+ 
+ void
+ App::retranslateUi() {
+diff --git a/src/mkvtoolnix-gui/app.h b/src/mkvtoolnix-gui/app.h
+index be54865a0..4388ad23e 100644
+--- a/src/mkvtoolnix-gui/app.h
++++ b/src/mkvtoolnix-gui/app.h
+@@ -15,7 +15,9 @@ class QThread;
+ namespace mtx::gui {
+ 
+ namespace Util {
++#ifdef MEDIA_PLAYER
+ class MediaPlayer;
++#endif
+ class NetworkAccessManager;
+ }
+ 
+@@ -98,12 +100,16 @@ public Q_SLOTS:
+ protected:
+   void setupInstanceCommunicator();
+   void setupNetworkAccessManager();
++#ifdef MEDIA_PLAYER
+   Util::MediaPlayer &setupMediaPlayer();
++#endif
+   Jobs::ProgramRunner &setupProgramRunner();
+ 
+ public:
+   static App *instance();
++#ifdef MEDIA_PLAYER
+   static Util::MediaPlayer &mediaPlayer();
++#endif
+   static Jobs::ProgramRunner &programRunner();
+ 
+   static Iso639LanguageList const &iso639Languages();
+diff --git a/src/mkvtoolnix-gui/forms/main_window/prefs_run_program_widget.ui b/src/mkvtoolnix-gui/forms/main_window/prefs_run_program_widget.ui
+index a4ae06f0d..4d1e649a8 100644
+--- a/src/mkvtoolnix-gui/forms/main_window/prefs_run_program_widget.ui
++++ b/src/mkvtoolnix-gui/forms/main_window/prefs_run_program_widget.ui
+@@ -222,6 +222,7 @@ p, li { white-space: pre-wrap; }
+           </item>
+          </layout>
+         </widget>
++<!--
+         <widget class="QWidget" name="playAudioFileTypePage">
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+@@ -294,6 +295,7 @@ p, li { white-space: pre-wrap; }
+           </item>
+          </layout>
+         </widget>
++-->
+        </widget>
+       </item>
+      </layout>
+@@ -334,9 +336,11 @@ p, li { white-space: pre-wrap; }
+   <tabstop>pbBrowseExecutable</tabstop>
+   <tabstop>pbAddVariable</tabstop>
+   <tabstop>tbUsageNotes</tabstop>
++<!--
+   <tabstop>leAudioFile</tabstop>
+   <tabstop>pbBrowseAudioFile</tabstop>
+   <tabstop>sbVolume</tabstop>
++-->
+  </tabstops>
+  <resources>
+   <include location="../../qt_resources.qrc"/>
+diff --git a/src/mkvtoolnix-gui/jobs/program_runner.cpp b/src/mkvtoolnix-gui/jobs/program_runner.cpp
+index c28aa05f6..a0d93813c 100644
+--- a/src/mkvtoolnix-gui/jobs/program_runner.cpp
++++ b/src/mkvtoolnix-gui/jobs/program_runner.cpp
+@@ -21,7 +21,9 @@
+ #include "mkvtoolnix-gui/jobs/program_runner/windows_program_runner.h"
+ #endif // SYS_WINDOWS
+ #include "mkvtoolnix-gui/jobs/tool.h"
++#ifdef MEDIA_PLAYER
+ #include "mkvtoolnix-gui/util/media_player.h"
++#endif
+ #include "mkvtoolnix-gui/util/message_box.h"
+ #include "mkvtoolnix-gui/util/string.h"
+ 
+@@ -106,8 +108,10 @@ ProgramRunner::run(Util::Settings::RunProgramForEvent forEvent,
+     else if (runConfig->m_type == Util::Settings::RunProgramType::DeleteSourceFiles)
+       deleteSourceFiles(variables);
+ 
++#ifdef MEDIA_PLAYER
+     else if (runConfig->m_type == Util::Settings::RunProgramType::PlayAudioFile)
+       playAudioFile(*runConfig);
++#endif
+ 
+     else if (runConfig->m_type == Util::Settings::RunProgramType::ShutDownComputer)
+       shutDownComputer(*runConfig);
+@@ -184,7 +188,11 @@ ProgramRunner::create() {
+ 
+ bool
+ ProgramRunner::isRunProgramTypeSupported(Util::Settings::RunProgramType type) {
++#ifdef MEDIA_PLAYER
+   return mtx::included_in(type, Util::Settings::RunProgramType::ExecuteProgram, Util::Settings::RunProgramType::PlayAudioFile, Util::Settings::RunProgramType::DeleteSourceFiles, Util::Settings::RunProgramType::QuitMKVToolNix);
++#else
++  return mtx::included_in(type, Util::Settings::RunProgramType::ExecuteProgram, Util::Settings::RunProgramType::DeleteSourceFiles, Util::Settings::RunProgramType::QuitMKVToolNix);
++#endif
+ }
+ 
+ bool
+@@ -238,6 +246,7 @@ ProgramRunner::deleteSourceFiles(VariableMap const &variables) {
+   }
+ }
+ 
++#ifdef MEDIA_PLAYER
+ void
+ ProgramRunner::playAudioFile(Util::Settings::RunProgramConfig &config) {
+   App::mediaPlayer().playFile(Util::replaceMtxVariableWithApplicationDirectory(config.m_audioFile), config.m_volume);
+@@ -248,6 +257,7 @@ ProgramRunner::defaultAudioFileName()
+   const {
+   return Q("%1/sounds/finished-1.webm").arg(Q(mtx::sys::get_package_data_folder()));
+ }
++#endif
+ 
+ void
+ ProgramRunner::showDesktopNotification(Util::Settings::RunProgramForEvent const /* forEvent */,
+diff --git a/src/mkvtoolnix-gui/jobs/program_runner.h b/src/mkvtoolnix-gui/jobs/program_runner.h
+index b9ccd9a5f..20b779471 100644
+--- a/src/mkvtoolnix-gui/jobs/program_runner.h
++++ b/src/mkvtoolnix-gui/jobs/program_runner.h
+@@ -37,7 +37,9 @@ public:
+ 
+   virtual void run(Util::Settings::RunProgramForEvent forEvent, std::function<void(VariableMap &)> const &setupVariables, Util::Settings::RunProgramConfigPtr const &forceRunThis = Util::Settings::RunProgramConfigPtr{});
+ 
++#ifdef MEDIA_PLAYER
+   virtual QString defaultAudioFileName() const;
++#endif
+ 
+ public Q_SLOTS:
+   virtual void executeActionsAfterJobFinishes(Job const &job);
+@@ -47,7 +49,9 @@ protected:
+   virtual void executeActions(ExecuteActionCondition condition, Job const *job = nullptr);
+   virtual void executeProgram(Util::Settings::RunProgramConfig &config, VariableMap const &variables);
+   virtual void deleteSourceFiles(VariableMap const &variables);
++#ifdef MEDIA_PLAYER
+   virtual void playAudioFile(Util::Settings::RunProgramConfig &config);
++#endif
+   virtual void shutDownComputer(Util::Settings::RunProgramConfig &config);
+   virtual void hibernateComputer(Util::Settings::RunProgramConfig &config);
+   virtual void sleepComputer(Util::Settings::RunProgramConfig &config);
+diff --git a/src/mkvtoolnix-gui/main_window/main_window.cpp b/src/mkvtoolnix-gui/main_window/main_window.cpp
+index 72753dbc3..2bb8f1f3d 100644
+--- a/src/mkvtoolnix-gui/main_window/main_window.cpp
++++ b/src/mkvtoolnix-gui/main_window/main_window.cpp
+@@ -33,7 +33,9 @@
+ #include "mkvtoolnix-gui/util/cache.h"
+ #include "mkvtoolnix-gui/util/file_identifier.h"
+ #include "mkvtoolnix-gui/util/language_dialog.h"
++#ifdef MEDIA_PLAYER
+ #include "mkvtoolnix-gui/util/media_player.h"
++#endif
+ #include "mkvtoolnix-gui/util/message_box.h"
+ #include "mkvtoolnix-gui/util/settings.h"
+ #include "mkvtoolnix-gui/util/sleep_inhibitor.h"
+@@ -253,7 +255,9 @@ MainWindow::setupConnections() {
+   connect(this,                                   &MainWindow::preferencesChanged,                        this,                 &MainWindow::showOrHideDebuggingMenu);
+ 
+   connect(app,                                    &App::toolRequested,                                    this,                 &MainWindow::switchToTool);
++#ifdef MEDIA_PLAYER
+   connect(&app->mediaPlayer(),                    &Util::MediaPlayer::errorOccurred,                      this,                 &MainWindow::handleMediaPlaybackError);
++#endif
+ }
+ 
+ void
+@@ -962,6 +966,7 @@ MainWindow::stopQueueSpinner() {
+   startStopQueueSpinner(false);
+ }
+ 
++#ifdef MEDIA_PLAYER
+ void
+ MainWindow::handleMediaPlaybackError(QMediaPlayer::Error error,
+                                      QString const &fileName) {
+@@ -980,6 +985,7 @@ MainWindow::handleMediaPlaybackError(QMediaPlayer::Error error,
+     .text(messages.join(Q(" ")))
+     .exec();
+ }
++#endif
+ 
+ Util::LanguageDialog &
+ MainWindow::setupLanguageDialog() {
+diff --git a/src/mkvtoolnix-gui/main_window/main_window.h b/src/mkvtoolnix-gui/main_window/main_window.h
+index 423d4cb85..7108f5834 100644
+--- a/src/mkvtoolnix-gui/main_window/main_window.h
++++ b/src/mkvtoolnix-gui/main_window/main_window.h
+@@ -3,7 +3,9 @@
+ #include "common/common_pch.h"
+ 
+ #include <QMainWindow>
++#ifdef MEDIA_PLAYER
+ #include <QMediaPlayer>
++#endif
+ 
+ #include "common/qt.h"
+ #include "mkvtoolnix-gui/main_window/preferences_dialog.h"
+@@ -96,7 +98,9 @@ public Q_SLOTS:
+   virtual void checkForUpdates();
+ #endif  // HAVE_UPDATE_CHECK
+ 
++#ifdef MEDIA_PLAYER
+   virtual void handleMediaPlaybackError(QMediaPlayer::Error error, QString const &fileName);
++#endif
+ 
+   virtual void displayInstallationProblems(Util::InstallationChecker::Problems const &problems);
+ 
+diff --git a/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.cpp b/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.cpp
+index b88c1ceec..4fbb0068e 100644
+--- a/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.cpp
++++ b/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.cpp
+@@ -79,8 +79,10 @@ PrefsRunProgramWidget::setupUi(Util::Settings::RunProgramConfig const &cfg) {
+   p->executable = Util::replaceApplicationDirectoryWithMtxVariable(cfg.m_commandLine.value(0));
+   p->ui->leName->setText(cfg.m_name);
+   p->ui->leCommandLine->setText(Util::escape(cfg.m_commandLine, Util::EscapeShellUnix).join(" "));
++#ifdef MEDIA_PLAYER
+   p->ui->leAudioFile->setText(QDir::toNativeSeparators(Util::replaceApplicationDirectoryWithMtxVariable(cfg.m_audioFile)));
+   p->ui->sbVolume->setValue(cfg.m_volume);
++#endif
+ 
+   for (auto const &checkBox : p->flagsByCheckbox.keys())
+     if (cfg.m_forEvents & p->flagsByCheckbox[checkBox])
+@@ -193,7 +195,9 @@ PrefsRunProgramWidget::setupTypeControl(Util::Settings::RunProgramConfig const &
+   };
+ 
+   addItemIfSupported(QY("Execute a program"),                        Util::Settings::RunProgramType::ExecuteProgram);
++#ifdef MEDIA_PLAYER
+   addItemIfSupported(QY("Play an audio file"),                       Util::Settings::RunProgramType::PlayAudioFile);
++#endif
+   addItemIfSupported(QY("Show a desktop notification"),              Util::Settings::RunProgramType::ShowDesktopNotification);
+   addItemIfSupported(QY("Shut down the computer"),                   Util::Settings::RunProgramType::ShutDownComputer);
+   addItemIfSupported(QY("Hibernate the computer"),                   Util::Settings::RunProgramType::HibernateComputer);
+@@ -202,7 +206,9 @@ PrefsRunProgramWidget::setupTypeControl(Util::Settings::RunProgramConfig const &
+   addItemIfSupported(QY("Quit MKVToolNix"),                          Util::Settings::RunProgramType::QuitMKVToolNix);
+ 
+   p->pagesByType[Util::Settings::RunProgramType::ExecuteProgram]          = p->ui->executeProgramTypePage;
++#ifdef MEDIA_PLAYER
+   p->pagesByType[Util::Settings::RunProgramType::PlayAudioFile]           = p->ui->playAudioFileTypePage;
++#endif
+   p->pagesByType[Util::Settings::RunProgramType::ShowDesktopNotification] = p->ui->emptyTypePage;
+   p->pagesByType[Util::Settings::RunProgramType::ShutDownComputer]        = p->ui->emptyTypePage;
+   p->pagesByType[Util::Settings::RunProgramType::HibernateComputer]       = p->ui->emptyTypePage;
+@@ -282,8 +288,10 @@ PrefsRunProgramWidget::setupConnections() {
+   connect(p->ui->pbBrowseExecutable,    &QPushButton::clicked,                                                  this, &PrefsRunProgramWidget::changeExecutable);
+   connect(p->ui->pbAddVariable,         &QPushButton::clicked,                                                  this, &PrefsRunProgramWidget::selectVariableToAdd);
+   connect(p->ui->pbExecuteNow,          &QPushButton::clicked,                                                  this, &PrefsRunProgramWidget::executeNow);
++#ifdef MEDIA_PLAYER
+   connect(p->ui->leAudioFile,           &QLineEdit::textEdited,                                                 this, &PrefsRunProgramWidget::audioFileEdited);
+   connect(p->ui->pbBrowseAudioFile,     &QPushButton::clicked,                                                  this, &PrefsRunProgramWidget::changeAudioFile);
++#endif
+ }
+ 
+ void
+@@ -382,8 +390,10 @@ PrefsRunProgramWidget::config()
+   cfg->m_type        = static_cast<Util::Settings::RunProgramType>(p->ui->cbType->currentData().value<int>());
+   cfg->m_commandLine = Util::unescapeSplit(cmdLine, Util::EscapeShellUnix);
+   cfg->m_active      = p->ui->cbConfigurationActive->isChecked();
++#ifdef MEDIA_PLAYER
+   cfg->m_audioFile   = QDir::toNativeSeparators(Util::replaceApplicationDirectoryWithMtxVariable(p->ui->leAudioFile->text()));
+   cfg->m_volume      = p->ui->sbVolume->value();
++#endif
+ 
+   for (auto const &checkBox : p->flagsByCheckbox.keys())
+     if (checkBox->isChecked())
+@@ -392,6 +402,7 @@ PrefsRunProgramWidget::config()
+   return cfg;
+ }
+ 
++#ifdef MEDIA_PLAYER
+ void
+ PrefsRunProgramWidget::changeAudioFile() {
+   auto p             = p_func();
+@@ -417,6 +428,7 @@ PrefsRunProgramWidget::audioFileEdited() {
+ 
+   Q_EMIT titleChanged();
+ }
++#endif
+ 
+ void
+ PrefsRunProgramWidget::typeChanged(int index) {
+diff --git a/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.h b/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.h
+index 063cebdd6..bc05a053e 100644
+--- a/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.h
++++ b/src/mkvtoolnix-gui/main_window/prefs_run_program_widget.h
+@@ -41,8 +41,10 @@ protected Q_SLOTS:
+   void executeNow();
+   void enableControls();
+ 
++#ifdef MEDIA_PLAYER
+   void changeAudioFile();
+   void audioFileEdited();
++#endif
+ 
+ protected:
+   void changeArguments(std::function<void(QStringList &)> const &worker);
+diff --git a/src/mkvtoolnix-gui/util/settings.cpp b/src/mkvtoolnix-gui/util/settings.cpp
+index 465a38162..61ec1c58d 100644
+--- a/src/mkvtoolnix-gui/util/settings.cpp
++++ b/src/mkvtoolnix-gui/util/settings.cpp
+@@ -264,6 +264,7 @@ convert67_0_0UseISO639_3Languages(version_number_t const &writtenByVersion) {
+   reg->endGroup();
+ }
+ 
++#ifdef MEDIA_PLAYER
+ void
+ convert67_0_0DefaultAudioFileNames(version_number_t const &writtenByVersion) {
+   if (writtenByVersion >= version_number_t{"67.0.0.0"})
+@@ -286,6 +287,7 @@ convert67_0_0DefaultAudioFileNames(version_number_t const &writtenByVersion) {
+ 
+   reg->endGroup();            // runProgramConfigurations
+ }
++#endif
+ 
+ void
+ convert93_0RegexesForDerivingTrackFlags(version_number_t const &writtenByVersion) {
+@@ -317,7 +319,9 @@ QString
+ Settings::RunProgramConfig::validate()
+   const {
+   return (m_type == RunProgramType::ExecuteProgram) && (m_commandLine.isEmpty() || m_commandLine.value(0).isEmpty()) ? QY("The program to execute hasn't been set yet.")
++#ifdef MEDIA_PLAYER
+        : (m_type == RunProgramType::PlayAudioFile)  && m_audioFile.isEmpty()                                         ? QY("The audio file to play hasn't been set yet.")
++#endif
+        :                                                                                                               QString{};
+ }
+ 
+@@ -334,7 +338,9 @@ Settings::RunProgramConfig::name()
+     return m_name;
+ 
+   return m_type == RunProgramType::ExecuteProgram          ? nameForExternalProgram()
++#ifdef MEDIA_PLAYER
+        : m_type == RunProgramType::PlayAudioFile           ? nameForPlayAudioFile()
++#endif
+        : m_type == RunProgramType::ShowDesktopNotification ? QY("Show a desktop notification")
+        : m_type == RunProgramType::ShutDownComputer        ? QY("Shut down the computer")
+        : m_type == RunProgramType::HibernateComputer       ? QY("Hibernate the computer")
+@@ -356,6 +362,7 @@ Settings::RunProgramConfig::nameForExternalProgram()
+   return QY("Execute program '%1'").arg(program);
+ }
+ 
++#ifdef MEDIA_PLAYER
+ QString
+ Settings::RunProgramConfig::nameForPlayAudioFile()
+   const {
+@@ -367,6 +374,7 @@ Settings::RunProgramConfig::nameForPlayAudioFile()
+ 
+   return QY("Play audio file '%1'").arg(audioFile);
+ }
++#endif
+ 
+ Settings Settings::s_settings;
+ 
+@@ -507,7 +515,9 @@ Settings::convertOldSettings() {
+   convert66_0_0LanguageShortcuts();
+   convert67_0_0AttachmentsAlwaysSkipForExistingName(writtenByVersion);
+   convert67_0_0UseISO639_3Languages(writtenByVersion);
++#ifdef MEDIA_PLAYER
+   convert67_0_0DefaultAudioFileNames(writtenByVersion);
++#endif
+   convert93_0RegexesForDerivingTrackFlags(writtenByVersion);
+ }
+ 
+@@ -824,8 +834,10 @@ Settings::loadRunProgramConfigurations(QSettings &reg) {
+     cfg->m_type        = (type > static_cast<int>(RunProgramType::Min)) && (type < static_cast<int>(RunProgramType::Max)) ? static_cast<RunProgramType>(type) : RunProgramType::Default;
+     cfg->m_forEvents   = static_cast<RunProgramForEvents>(reg.value(s_valForEvents).toInt());
+     cfg->m_commandLine = reg.value(s_valCommandLine).toStringList();
++#ifdef MEDIA_PLAYER
+     cfg->m_audioFile   = reg.value(s_valAudioFile).toString();
+     cfg->m_volume      = std::min(reg.value(s_valVolume, 50).toUInt(), 100u);
++#endif
+     reg.endGroup();
+ 
+     if (!cfg->m_active || cfg->isValid())
+@@ -911,7 +923,9 @@ Settings::addDefaultRunProgramConfigurations(QSettings &reg) {
+ 
+   auto numConfigurationsBefore = m_runProgramConfigurations.count();
+ 
++#ifdef MEDIA_PLAYER
+   addDefaultRunProgramConfigurationForType(reg, RunProgramType::PlayAudioFile, [](RunProgramConfig &cfg) { cfg.m_audioFile = App::programRunner().defaultAudioFileName(); });
++#endif
+   addDefaultRunProgramConfigurationForType(reg, RunProgramType::ShowDesktopNotification, [](RunProgramConfig &cfg) { cfg.m_forEvents = RunAfterJobCompletesSuccessfully | RunAfterJobCompletesWithErrors | RunAfterJobCompletesWithWarnings; });
+   addDefaultRunProgramConfigurationForType(reg, RunProgramType::SleepComputer);
+   addDefaultRunProgramConfigurationForType(reg, RunProgramType::HibernateComputer);
+@@ -919,7 +933,11 @@ Settings::addDefaultRunProgramConfigurations(QSettings &reg) {
+   addDefaultRunProgramConfigurationForType(reg, RunProgramType::DeleteSourceFiles, [](RunProgramConfig &cfg) { cfg.m_active = false; });
+   addDefaultRunProgramConfigurationForType(reg, RunProgramType::QuitMKVToolNix);
+ 
++#ifdef MEDIA_PLAYER
+   auto changed = fixDefaultAudioFileNameBug();
++#else
++  auto changed = false;
++#endif
+ 
+   if ((numConfigurationsBefore != m_runProgramConfigurations.count()) || changed)
+     saveRunProgramConfigurations(reg);
+@@ -927,6 +945,7 @@ Settings::addDefaultRunProgramConfigurations(QSettings &reg) {
+   reg.endGroup();               // runProgramConfigurations
+ }
+ 
++#ifdef MEDIA_PLAYER
+ bool
+ Settings::fixDefaultAudioFileNameBug() {
+ #if defined(SYS_WINDOWS)
+@@ -953,6 +972,7 @@ Settings::fixDefaultAudioFileNameBug() {
+   return false;
+ #endif
+ }
++#endif
+ 
+ QString
+ Settings::actualMkvmergeExe()
+@@ -1199,8 +1219,10 @@ Settings::saveRunProgramConfigurations(QSettings &reg)
+     reg.setValue(s_valType,        static_cast<int>(cfg->m_type));
+     reg.setValue(s_valForEvents,   static_cast<int>(cfg->m_forEvents));
+     reg.setValue(s_valCommandLine, cfg->m_commandLine);
++#ifdef MEDIA_PLAYER
+     reg.setValue(s_valAudioFile,   cfg->m_audioFile);
+     reg.setValue(s_valVolume,      cfg->m_volume);
++#endif
+     reg.endGroup();
+   }
+ 
+diff --git a/src/mkvtoolnix-gui/util/settings.h b/src/mkvtoolnix-gui/util/settings.h
+index b5aa471bd..c0c3a3d5e 100644
+--- a/src/mkvtoolnix-gui/util/settings.h
++++ b/src/mkvtoolnix-gui/util/settings.h
+@@ -27,7 +27,9 @@ public:
+   enum RunProgramType {
+     Min,
+     ExecuteProgram,
++#ifdef MEDIA_PLAYER
+     PlayAudioFile,
++#endif
+     ShutDownComputer,
+     HibernateComputer,
+     SleepComputer,
+@@ -163,8 +165,10 @@ public:
+     QString m_name;
+     RunProgramForEvents m_forEvents{};
+     QStringList m_commandLine;
++#ifdef MEDIA_PLAYER
+     QString m_audioFile;
+     unsigned int m_volume{75};
++#endif
+ 
+     bool isValid() const;
+     QString validate() const;
+@@ -172,7 +176,9 @@ public:
+ 
+   private:
+     QString nameForExternalProgram() const;
++#ifdef MEDIA_PLAYER
+     QString nameForPlayAudioFile() const;
++#endif
+   };
+ 
+   class LanguageShortcut {
+@@ -307,7 +313,9 @@ protected:
+ 
+   void addDefaultRunProgramConfigurations(QSettings &reg);
+   void addDefaultRunProgramConfigurationForType(QSettings &reg, RunProgramType type, std::function<void(RunProgramConfig &)> const &modifier = nullptr);
++#ifdef MEDIA_PLAYER
+   bool fixDefaultAudioFileNameBug();
++#endif
+ 
+   void setDefaults(std::optional<QVariant> enableMuxingTracksByTheseTypes);
+ 
+diff --git a/src/mkvtoolnix-gui/util/system_information.cpp b/src/mkvtoolnix-gui/util/system_information.cpp
+index fad257565..0e1df33b5 100644
+--- a/src/mkvtoolnix-gui/util/system_information.cpp
++++ b/src/mkvtoolnix-gui/util/system_information.cpp
+@@ -2,7 +2,9 @@
+ 
+ #include <Qt>
+ #include <QDir>
++#ifdef MEDIA_INFO
+ #include <QMediaFormat>
++#endif
+ #include <QOperatingSystemVersion>
+ #include <QScreen>
+ #include <QSettings>
+@@ -203,6 +205,7 @@ gatherQtInfo(QStringList &info) {
+   info << Q("* Version: %1.%2.%3").arg((QT_VERSION >> 16) & 0xff).arg((QT_VERSION >> 8) & 0xff).arg(QT_VERSION & 0xff);
+   info << Q("* Build ABI: %1").arg(QSysInfo::buildAbi());
+ 
++#ifdef MEDIA_PLAYER
+   QMediaFormat formats;
+ 
+   QStringList lines;
+@@ -255,6 +258,7 @@ gatherQtInfo(QStringList &info) {
+ 
+   info << Q("") << Q("## Supported file formats") << Q("") << disclaimer << Q("");
+   info += lines;
++#endif
+ }
+ 
+ void

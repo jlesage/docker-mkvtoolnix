@@ -40,9 +40,10 @@ apk --no-cache add \
     binutils \
     ruby-rake \
     pkgconf \
+    automake \
+    autoconf \
     qtchooser \
     qt6-qtbase-dev \
-    qt6-qtmultimedia-dev \
     qt6-qtsvg-dev \
 
 xx-apk --no-cache --no-scripts add \
@@ -57,7 +58,6 @@ xx-apk --no-cache --no-scripts add \
     libdvdread-dev \
     zlib-dev \
     qt6-qtbase-dev \
-    qt6-qtmultimedia-dev \
     qt6-qtsvg-dev \
     cmark-dev \
 
@@ -75,6 +75,8 @@ curl -# -L -f ${MKVTOOLNIX_URL} | tar xJ --strip 1 -C /tmp/mkvtoolnix
 
 log "Patching MKVToolNix..."
 patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/locale-fix.patch
+patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/disable-media-player.patch
+rm /tmp/mkvtoolnix/src/mkvtoolnix-gui/util/media_player.*
 
 # NOTE: During the configure phase, Qt6 related checks (`ac/qt6.m4`) are done
 #       with qmake6, which doesn't work for cross-compilation.  Thus, the checks
@@ -84,6 +86,7 @@ log "Configuring MKVToolNix..."
 sed -i 's/$${CROSS_COMPILE}clang/xx-clang/g' /usr/lib/qt6/mkspecs/common/clang.conf
 (
     cd /tmp/mkvtoolnix && \
+    autoreconf -f -i -v && \
     env LIBINTL_LIBS=-lintl ./configure \
         am_cv_qt6_compilation=1 \
         --build=$(TARGETPLATFORM= xx-clang --print-target-triple) \

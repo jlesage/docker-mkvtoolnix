@@ -67,9 +67,9 @@ RUN add-pkg \
         libdvdread \
         tinyxml2 \
         qt6-qtbase-x11 \
-        qt6-qtmultimedia \
         libcmark \
         fmt \
+        libvorbis \
         # Needed for icons.
         qt6-qtsvg \
         # Needed for dark mode.

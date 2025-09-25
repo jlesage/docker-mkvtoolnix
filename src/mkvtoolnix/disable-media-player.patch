@@ -473,16 +473,6 @@ diff --git a/src/mkvtoolnix-gui/util/settings.h b/src/mkvtoolnix-gui/util/settin
 index b5aa471bd..c0c3a3d5e 100644
 --- a/src/mkvtoolnix-gui/util/settings.h
 +++ b/src/mkvtoolnix-gui/util/settings.h
-@@ -27,7 +27,9 @@ public:
-   enum RunProgramType {
-     Min,
-     ExecuteProgram,
-+#ifdef MEDIA_PLAYER
-     PlayAudioFile,
-+#endif
-     ShutDownComputer,
-     HibernateComputer,
-     SleepComputer,
 @@ -163,8 +165,10 @@ public:
      QString m_name;
      RunProgramForEvents m_forEvents{};

@@ -9,11 +9,11 @@
      }
  }
  
---- a/Source/GUI/Qt/graphplugin.h
-+++ b/Source/GUI/Qt/graphplugin.h
+--- a/Source/GUI/Qt/htmlwidget.h	2025-07-29 15:00:06.405946470 -0400
++++ b/Source/GUI/Qt/htmlwidget.h	2025-07-29 15:01:05.127698591 -0400
 @@ -18,6 +18,9 @@
  #ifdef EDGE_WEBVIEW2_YES
- #include "webview2widget.h"
+ #include "edgewebview2widget.h"
  #define WebViewWidget WebView2Widget
 +#elif defined(QT_TEXT_BROWSER_YES)
 +#include <QTextBrowser>
@@ -21,36 +21,23 @@
  #else
  #include <QWebEngineView>
  #define WebViewWidget QWebEngineView
---- a/Source/GUI/Qt/mainwindow.cpp
-+++ b/Source/GUI/Qt/mainwindow.cpp
-@@ -55,6 +55,10 @@ using namespace ZenLib;
- #include "webview2widget.h"
- #include "graphplugin.h"
- #define WebViewWidget WebView2Widget
-+#elif defined(QT_TEXT_BROWSER_YES)
-+#include <QTextBrowser>
-+#include "graphplugin.h"
-+#define WebViewWidget QTextBrowser
- #elif !defined(MEDIAINFO_HTML_NO)
- #include <QWebEngineView>
- #include "graphplugin.h"
---- a/Source/GUI/Qt/graphplugin.cpp
-+++ b/Source/GUI/Qt/graphplugin.cpp
-@@ -78,6 +78,9 @@ QString GraphViewWidget::generateGraphHTML() {
+--- a/Source/GUI/Qt/htmlwidget.cpp	2025-07-29 15:00:11.036039682 -0400
++++ b/Source/GUI/Qt/htmlwidget.cpp	2025-07-29 15:06:48.535271993 -0400
+@@ -91,6 +91,9 @@
+     else
+         HTML = wstring2QString(C->Inform_Get());
  
- void GraphViewWidget::refresh() {
-     QString graphHTML{generateGraphHTML()};
 +#ifdef QT_TEXT_BROWSER_YES
-+    webView->setHtml(graphHTML);
++    webView->setHtml(HTML);
 +#else
-     if (graphHTML.toUtf8().size() < 0.5e6)
-         webView->setHtml(graphHTML);
+     if (HTML.toUtf8().size() < 0.5e6)
+         webView->setHtml(HTML);
      else {
-@@ -87,6 +90,7 @@ void GraphViewWidget::refresh() {
-         tempFile.write(graphHTML.toUtf8());
+@@ -100,6 +103,7 @@
+         tempFile.write(HTML.toUtf8());
          webView->load(QUrl::fromLocalFile(tempFile.fileName()));
      }
 +#endif
  }
  
- void GraphViewWidget::changeFilePos(int newFilePos) {
+ void HTMLViewWidget::changeFilePos(int newFilePos) {

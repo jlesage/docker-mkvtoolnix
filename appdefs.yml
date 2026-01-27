@@ -284,7 +284,7 @@ app:
     - version: 22.10.1
       date: 2022-10-16
       changes:
-        - 'Versioning scheme  of the Docker image changed to `YY.MM.SEQUENCE`.'
+        - 'Versioning scheme of the Docker image changed to `YY.MM.SEQUENCE`.'
         - 'Update of the baseimage to version 4.0.4 brings the following new features:'
         - '2:Multi-arch image support.'
         - '2:Support for dark mode.'

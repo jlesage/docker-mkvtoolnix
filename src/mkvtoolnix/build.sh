@@ -17,7 +17,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Set to `1` to enable verbose build.
 VERBOSE_BUILD=0
 
-function log {
+log() {
     echo ">>> $*"
 }
 

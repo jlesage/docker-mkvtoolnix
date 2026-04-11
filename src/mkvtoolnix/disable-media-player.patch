@@ -206,9 +206,9 @@ index 72753dbc3..2bb8f1f3d 100644
  #include "mkvtoolnix-gui/util/settings.h"
  #include "mkvtoolnix-gui/util/sleep_inhibitor.h"
 @@ -253,7 +255,9 @@ MainWindow::setupConnections() {
-   connect(this,                                   &MainWindow::preferencesChanged,                        this,                 &MainWindow::showOrHideDebuggingMenu);
  
    connect(app,                                    &App::toolRequested,                                    this,                 &MainWindow::switchToTool);
+   connect(app,                                    &App::systemColorSchemeChanged,                         this,                 &MainWindow::refreshWidgetsAfterColorSchemeChange);
 +#ifdef MEDIA_PLAYER
    connect(&app->mediaPlayer(),                    &Util::MediaPlayer::errorOccurred,                      this,                 &MainWindow::handleMediaPlaybackError);
 +#endif

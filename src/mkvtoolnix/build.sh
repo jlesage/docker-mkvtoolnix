@@ -74,8 +74,14 @@ curl -# -L -f ${MKVTOOLNIX_URL} | tar xJ --strip 1 -C /tmp/mkvtoolnix
 #
 
 log "Patching MKVToolNix..."
-patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/locale-fix.patch
-patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/disable-media-player.patch
+PATCHES="
+    locale-fix.patch
+    disable-media-player.patch
+"
+for p in $PATCHES; do
+    log "  --> Applying patch $p..."
+    patch -p1 -d /tmp/mkvtoolnix < "$SCRIPT_DIR"/"$p"
+done
 rm /tmp/mkvtoolnix/src/mkvtoolnix-gui/util/media_player.*
 
 # NOTE: During the configure phase, Qt6 related checks (`ac/qt6.m4`) are done

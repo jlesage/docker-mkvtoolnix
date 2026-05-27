@@ -347,7 +347,7 @@ diff --git a/src/mkvtoolnix-gui/util/settings.cpp b/src/mkvtoolnix-gui/util/sett
 index 465a38162..61ec1c58d 100644
 --- a/src/mkvtoolnix-gui/util/settings.cpp
 +++ b/src/mkvtoolnix-gui/util/settings.cpp
-@@ -264,6 +264,7 @@ convert67_0_0UseISO639_3Languages(version_number_t const &writtenByVersion) {
+@@ -264,6 +264,7 @@
    reg->endGroup();
  }
  
@@ -355,7 +355,7 @@ index 465a38162..61ec1c58d 100644
  void
  convert67_0_0DefaultAudioFileNames(version_number_t const &writtenByVersion) {
    if (writtenByVersion >= version_number_t{"67.0.0.0"})
-@@ -286,6 +287,7 @@ convert67_0_0DefaultAudioFileNames(version_number_t const &writtenByVersion) {
+@@ -286,6 +287,7 @@
  
    reg->endGroup();            // runProgramConfigurations
  }
@@ -363,7 +363,7 @@ index 465a38162..61ec1c58d 100644
  
  void
  convert93_0RegexesForDerivingTrackFlags(version_number_t const &writtenByVersion) {
-@@ -317,7 +319,9 @@ QString
+@@ -317,7 +319,9 @@
  Settings::RunProgramConfig::validate()
    const {
    return (m_type == RunProgramType::ExecuteProgram) && (m_commandLine.isEmpty() || m_commandLine.value(0).isEmpty()) ? QY("The program to execute hasn't been set yet.")
@@ -373,7 +373,7 @@ index 465a38162..61ec1c58d 100644
         :                                                                                                               QString{};
  }
  
-@@ -334,7 +338,9 @@ Settings::RunProgramConfig::name()
+@@ -334,7 +338,9 @@
      return m_name;
  
    return m_type == RunProgramType::ExecuteProgram          ? nameForExternalProgram()
@@ -383,7 +383,7 @@ index 465a38162..61ec1c58d 100644
         : m_type == RunProgramType::ShowDesktopNotification ? QY("Show a desktop notification")
         : m_type == RunProgramType::ShutDownComputer        ? QY("Shut down the computer")
         : m_type == RunProgramType::HibernateComputer       ? QY("Hibernate the computer")
-@@ -356,6 +362,7 @@ Settings::RunProgramConfig::nameForExternalProgram()
+@@ -356,6 +362,7 @@
    return QY("Execute program '%1'").arg(program);
  }
  
@@ -391,7 +391,7 @@ index 465a38162..61ec1c58d 100644
  QString
  Settings::RunProgramConfig::nameForPlayAudioFile()
    const {
-@@ -367,6 +374,7 @@ Settings::RunProgramConfig::nameForPlayAudioFile()
+@@ -367,6 +374,7 @@
  
    return QY("Play audio file '%1'").arg(audioFile);
  }
@@ -399,7 +399,7 @@ index 465a38162..61ec1c58d 100644
  
  Settings Settings::s_settings;
  
-@@ -507,7 +515,9 @@ Settings::convertOldSettings() {
+@@ -507,7 +515,9 @@
    convert66_0_0LanguageShortcuts();
    convert67_0_0AttachmentsAlwaysSkipForExistingName(writtenByVersion);
    convert67_0_0UseISO639_3Languages(writtenByVersion);
@@ -409,7 +409,7 @@ index 465a38162..61ec1c58d 100644
    convert93_0RegexesForDerivingTrackFlags(writtenByVersion);
  }
  
-@@ -824,8 +834,10 @@ Settings::loadRunProgramConfigurations(QSettings &reg) {
+@@ -825,8 +835,10 @@
      cfg->m_type        = (type > static_cast<int>(RunProgramType::Min)) && (type < static_cast<int>(RunProgramType::Max)) ? static_cast<RunProgramType>(type) : RunProgramType::Default;
      cfg->m_forEvents   = static_cast<RunProgramForEvents>(reg.value(s_valForEvents).toInt());
      cfg->m_commandLine = reg.value(s_valCommandLine).toStringList();
@@ -420,7 +420,18 @@ index 465a38162..61ec1c58d 100644
      reg.endGroup();
  
      if (!cfg->m_active || cfg->isValid())
-@@ -911,7 +923,9 @@ Settings::addDefaultRunProgramConfigurations(QSettings &reg) {
+@@ -840,8 +852,10 @@
+ Settings::loadLastProgramRunnerAudioDir(QSettings &reg) {
+   reg.beginGroup(s_grpSettings);
+   m_lastProgramRunnerAudioDir = QDir{reg.value(s_valLastProgramRunnerAudioDir).toString()};
++#ifdef MEDIA_PLAYER
+   if (m_lastProgramRunnerAudioDir.path().isEmpty() || (m_lastProgramRunnerAudioDir.path() == u"."_s))
+     m_lastProgramRunnerAudioDir = QFileInfo{replaceMtxVariableWithApplicationDirectory(App::programRunner().defaultAudioFileName())}.dir();
++#endif
+   reg.endGroup();               // settings
+ }
+ 
+@@ -921,7 +935,9 @@
  
    auto numConfigurationsBefore = m_runProgramConfigurations.count();
  
@@ -430,7 +441,7 @@ index 465a38162..61ec1c58d 100644
    addDefaultRunProgramConfigurationForType(reg, RunProgramType::ShowDesktopNotification, [](RunProgramConfig &cfg) { cfg.m_forEvents = RunAfterJobCompletesSuccessfully | RunAfterJobCompletesWithErrors | RunAfterJobCompletesWithWarnings; });
    addDefaultRunProgramConfigurationForType(reg, RunProgramType::SleepComputer);
    addDefaultRunProgramConfigurationForType(reg, RunProgramType::HibernateComputer);
-@@ -919,7 +933,11 @@ Settings::addDefaultRunProgramConfigurations(QSettings &reg) {
+@@ -929,7 +945,11 @@
    addDefaultRunProgramConfigurationForType(reg, RunProgramType::DeleteSourceFiles, [](RunProgramConfig &cfg) { cfg.m_active = false; });
    addDefaultRunProgramConfigurationForType(reg, RunProgramType::QuitMKVToolNix);
  
@@ -442,15 +453,31 @@ index 465a38162..61ec1c58d 100644
  
    if ((numConfigurationsBefore != m_runProgramConfigurations.count()) || changed)
      saveRunProgramConfigurations(reg);
-@@ -927,6 +945,7 @@ Settings::addDefaultRunProgramConfigurations(QSettings &reg) {
+@@ -937,6 +957,7 @@
    reg.endGroup();               // runProgramConfigurations
  }
  
 +#ifdef MEDIA_PLAYER
  bool
  Settings::fixDefaultAudioFileNameBug() {
- #if defined(SYS_WINDOWS)
-@@ -953,6 +972,7 @@ Settings::fixDefaultAudioFileNameBug() {
+ #if defined(SYS_WINDOWS) || defined(SYS_APPLE)
+@@ -958,6 +979,7 @@
+   QRegularExpression wrongFileNameRE{"<MTX_INSTALLATION_DIRECTORY>/sounds/finished-1\\.webm"};
+ # endif
+ 
++#ifdef MEDIA_PLAYER
+   for (auto const &config : m_runProgramConfigurations) {
+     if (   (config->m_type != RunProgramType::PlayAudioFile)
+         || !config->m_audioFile.contains(wrongFileNameRE))
+@@ -966,6 +988,7 @@
+     config->m_audioFile = App::programRunner().defaultAudioFileName();
+     changed             = true;
+   }
++#endif
+ 
+   return changed;
+ 
+@@ -973,6 +996,7 @@
    return false;
  #endif
  }
@@ -458,7 +485,7 @@ index 465a38162..61ec1c58d 100644
  
  QString
  Settings::actualMkvmergeExe()
-@@ -1199,8 +1219,10 @@ Settings::saveRunProgramConfigurations(QSettings &reg)
+@@ -1220,8 +1244,10 @@
      reg.setValue(s_valType,        static_cast<int>(cfg->m_type));
      reg.setValue(s_valForEvents,   static_cast<int>(cfg->m_forEvents));
      reg.setValue(s_valCommandLine, cfg->m_commandLine);

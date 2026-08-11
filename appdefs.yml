@@ -22,6 +22,13 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 26.08.1
+      date: 2026-08-11
+      changes:
+        - 'Updated baseimage to version 4.13.1, bringing the following changes:'
+        - '2:Host clipboard sync can now be controlled via environment variable and web UI toggle.'
+        - '2:Improved reliability and security of the web interface.'
+        - '2:Improved reliability and security of services.'
     - version: 26.07.1
       date: 2026-07-14
       changes:

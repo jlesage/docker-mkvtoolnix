@@ -22,6 +22,10 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 26.08.2
+      date: 2026-08-17
+      changes:
+        - 'Updated baseimage to version 4.13.2.'
     - version: 26.08.1
       date: 2026-08-11
       changes:

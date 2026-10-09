@@ -57,6 +57,7 @@ apk --no-cache add \
     pkgconf \
     qt6-qttools \
     qt6-qtbase-dev \
+    qt6-qtsvg-dev \
 
 xx-apk --no-cache --no-scripts add \
     musl-dev \

@@ -65,6 +65,7 @@ xx-apk --no-cache --no-scripts add \
     tinyxml2-dev \
     zlib-dev \
     qt6-qtbase-dev \
+    qt6-qtsvg-dev \
 
 ln -s /usr/lib/qt6/bin/lupdate /usr/bin/lupdate
 ln -s /usr/lib/qt6/bin/lrelease /usr/bin/lrelease

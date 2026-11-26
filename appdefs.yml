@@ -22,6 +22,12 @@ app:
     category: MediaApp:Video
   documentation:
   changelog:
+    - version: 26.11.2
+      date: 2026-11-26
+      changes:
+        - 'Updated MKVToolNix to version 104.0.'
+        - 'Updated baseimage to version 4.15.1, which brings the following changes:'
+        - '2:Fixed issue that could affect application window display.'
     - version: 26.11.1
       date: 2026-11-25
       changes:
